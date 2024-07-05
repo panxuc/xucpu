@@ -17,9 +17,11 @@ module ID_EX(
   input wire [31:0] busAID,
   input wire [31:0] busBID,
   input wire [7:0] aluOpID,
+  input wire [1:0] aluDstID,
   output reg [31:0] busAEX,
   output reg [31:0] busBEX,
   output reg [7:0] aluOpEX,
+  output reg [1:0] aluDstEX
 );
 
   always @(posedge clk) begin

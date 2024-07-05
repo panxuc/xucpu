@@ -352,17 +352,17 @@ module ID(
 
   always @(*) begin
     if (readEnable1 && writeEnableEX && readReg1 == writeRegEX) begin
-      readData1 = writeDataEX;
+      busA = writeDataEX;
     end else if (readEnable1 && writeEnableMEM && readReg1 == writeRegMEM) begin
-      readData1 = writeDataMEM;
+      busA = writeDataMEM;
     end
   end
 
   always @(*) begin
     if (readEnable2 && writeEnableEX && readReg2 == writeRegEX) begin
-      readData2 = writeDataEX;
+      busB = writeDataEX;
     end else if (readEnable2 && writeEnableMEM && readReg2 == writeRegMEM) begin
-      readData2 = writeDataMEM;
+      busB = writeDataMEM;
     end
   end
 

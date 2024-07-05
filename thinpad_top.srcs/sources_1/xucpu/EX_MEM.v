@@ -10,11 +10,11 @@ module EX_MEM(
   output reg [31:0] writeDataMEM,
 
   input wire [7:0] memOpEX,
-  input wire [31:0] memWriteDataEX,
   input wire [31:0] memAddressEX,
+  input wire [31:0] memWriteDataEX,
   output reg [7:0] memOpMEM,
-  output reg [31:0] memWriteDataMEM,
-  output reg [31:0] memAddressMEM
+  output reg [31:0] memAddressMEM,
+  output reg [31:0] memWriteDataMEM
 );
 
   always @(posedge clk) begin
@@ -23,15 +23,15 @@ module EX_MEM(
       writeRegMEM <= 5'h0;
       writeDataMEM <= 32'h0;
       memOpMEM <= 3'h0;
-      memWriteDataMEM <= 32'h0;
       memAddressMEM <= 32'h0;
+      memWriteDataMEM <= 32'h0;
     end else begin
       writeEnableMEM <= writeEnableEX;
       writeRegMEM <= writeRegEX;
       writeDataMEM <= writeDataEX;
       memOpMEM <= memOpEX;
-      memWriteDataMEM <= memWriteDataEX;
       memAddressMEM <= memAddressEX;
+      memWriteDataMEM <= memWriteDataEX;
     end
   end
 

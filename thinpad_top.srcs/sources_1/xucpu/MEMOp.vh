@@ -7,4 +7,8 @@
 `define MEM_SB  8'b00000011
 `define MEM_SW  8'b00000100
 
+`define RAM_NOP   8'b00000000
+`define RAM_LOAD  8'b00000001
+`define RAM_STORE 8'b00000010
+
 `endif
