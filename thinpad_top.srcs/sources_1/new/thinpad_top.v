@@ -183,44 +183,80 @@ module thinpad_top(
 // );
 /* =========== Demo code end =========== */
 
-wire instrMemReadEnable;
-wire [31:0] instrMemAddress;
-wire [31:0] instrMemData;
-wire dataMemReadEnable;
-wire dataMemWriteEnable;
-wire [31:0] dataMemReadData;
-wire [31:0] dataMemWriteData;
-wire [31:0] dataMemAddress;
+    wire locked, clk_10M, clk_20M;
+    pll_example clock_gen 
+    (
+    // Clock in ports
+    .clk_in1(clk_50M),  // 外部时钟输入
+    // Clock out ports
+    .clk_out1(clk_10M), // 时钟输出1，频率在IP配置界面中设置
+    .clk_out2(clk_20M), // 时钟输出2，频率在IP配置界面中设置
+    // Status and control signals
+    .reset(reset_btn), // PLL复位输入
+    .locked(locked)    // PLL锁定指示输出，"1"表示时钟稳定，
+                        // 后级电路复位信号应当由它生成（见下）
+    );
 
-wire txd;
-wire rxd;
+    wire instrMemReadEnable;
+    wire [31:0] instrMemAddress;
+    wire [31:0] instrMemData;
+    wire dataMemReadEnable;
+    wire dataMemWriteEnable;
+    wire [31:0] dataMemReadData;
+    wire [31:0] dataMemWriteData;
+    wire [31:0] dataMemAddress;
+    wire [3:0] dataMemByteEnable;
+    wire dataMemChipSelect;
 
-CPU u_cpu(
-    .clk(clk_50M),
-    .rst(reset_btn),
-    .instrMemReadEnable(instrMemReadEnable),
-    .instrMemAddress(instrMemAddress),
-    .instrMemData(instrMemData),
-    .dataMemReadEnable(dataMemReadEnable),
-    .dataMemWriteEnable(dataMemWriteEnable),
-    .dataMemReadData(dataMemReadData),
-    .dataMemWriteData(dataMemWriteData),
-    .dataMemAddress(dataMemAddress)
-);
+    wire [1:0] state;
 
-RAM u_ram(
-    .clk(clk_50M),
-    .rst(reset_btn),
-    .txd(txd),
-    .rxd(rxd),
-    .instrMemReadEnable(instrMemReadEnable),
-    .instrMemAddress(instrMemAddress),
-    .instrMemData(instrMemData),
-    .dataMemReadEnable(dataMemReadEnable),
-    .dataMemWriteEnable(dataMemWriteEnable),
-    .dataMemReadData(dataMemReadData),
-    .dataMemWriteData(dataMemWriteData),
-    .dataMemAddress(dataMemAddress)
-);
+    wire txd;
+    wire rxd;
+
+    CPU u_cpu(
+        .clk(clk_50M),
+        .rst(reset_btn),
+        .instrMemReadEnable(instrMemReadEnable),
+        .instrMemAddress(instrMemAddress),
+        .instrMemData(instrMemData),
+        .dataMemReadEnable(dataMemReadEnable),
+        .dataMemWriteEnable(dataMemWriteEnable),
+        .dataMemReadData(dataMemReadData),
+        .dataMemWriteData(dataMemWriteData),
+        .dataMemAddress(dataMemAddress),
+        .dataMemByteEnable(dataMemByteEnable),
+        .dataMemChipSelect(dataMemChipSelect),
+        .state(state)
+    );
+
+    RAM u_ram(
+        .clk(clk_50M),
+        .rst(reset_btn),
+        .txd(txd),
+        .rxd(rxd),
+        .instrMemReadEnable(instrMemReadEnable),
+        .instrMemAddress(instrMemAddress),
+        .instrMemData(instrMemData),
+        .dataMemReadEnable(dataMemReadEnable),
+        .dataMemWriteEnable(dataMemWriteEnable),
+        .dataMemReadData(dataMemReadData),
+        .dataMemWriteData(dataMemWriteData),
+        .dataMemAddress(dataMemAddress),
+        .dataMemByteEnable(dataMemByteEnable),
+        .dataMemChipSelect(dataMemChipSelect),
+        .base_ram_data(base_ram_data),
+        .base_ram_addr(base_ram_addr),
+        .base_ram_be_n(base_ram_be_n),
+        .base_ram_ce_n(base_ram_ce_n),
+        .base_ram_oe_n(base_ram_oe_n),
+        .base_ram_we_n(base_ram_we_n),
+        .ext_ram_data(ext_ram_data),
+        .ext_ram_addr(ext_ram_addr),
+        .ext_ram_be_n(ext_ram_be_n),
+        .ext_ram_ce_n(ext_ram_ce_n),
+        .ext_ram_oe_n(ext_ram_oe_n),
+        .ext_ram_we_n(ext_ram_we_n),
+        .state(state)
+    );
 
 endmodule

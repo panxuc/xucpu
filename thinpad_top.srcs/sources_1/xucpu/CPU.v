@@ -10,7 +10,11 @@ module CPU(
   output wire dataMemWriteEnable,
   input wire [31:0] dataMemReadData,
   output wire [31:0] dataMemWriteData,
-  output wire [31:0] dataMemAddress
+  output wire [31:0] dataMemAddress,
+  output wire [3:0] dataMemByteEnable,
+  output wire dataMemChipSelect,
+
+  input wire [1:0] state
 );
   // IF
 
@@ -61,11 +65,8 @@ module CPU(
 
   // PC
   wire stall;
-  wire exception;
-  wire [31:0] exceptionAddress;
   wire branch;
   wire [31:0] branchAddress;
-  wire [31:0] pc;
 
   // Reg
   wire RegReadEnable1;
@@ -94,19 +95,18 @@ module CPU(
     .clk(clk),
     .rst(rst),
     .stall(stall),
-    .exception(exception),
-    .exceptionAddress(exceptionAddress),
     .branch(branch),
     .branchAddress(branchAddress),
-    .pc(pc)
+    .pc(instrMemAddress),
+    .ce(instrMemReadEnable)
   );
 
   IF_ID u_if_id(
     .clk(clk),
     .rst(rst),
     .stall(stall),
-    .pcIF(pc),
-    .instrIF(IDInstrIn),
+    .pcIF(instrMemAddress),
+    .instrIF(instrMemData),
     .pcID(IDPcIn),
     .instrID(IDInstrIn)
   );
@@ -222,10 +222,13 @@ module CPU(
     .memOp(MEMMemOpIn),
     .memAddress(MEMMemAddressIn),
     .memWriteData(MEMMemWriteDataIn),
-    .ramOp(RAMOp),
-    .ramAddress(RAMAddress),
-    .ramWriteData(RAMWriteData),
-    .ramReadData(RAMReadData)
+    .dataMemReadEnable(dataMemReadEnable),
+    .dataMemWriteEnable(dataMemWriteEnable),
+    .dataMemReadData(dataMemReadData),
+    .dataMemWriteData(dataMemWriteData),
+    .dataMemAddress(dataMemAddress),
+    .dataMemByteEnable(dataMemByteEnable),
+    .dataMemChipSelect(dataMemChipSelect)
   );
 
   MEM_WB u_mem_wb(
