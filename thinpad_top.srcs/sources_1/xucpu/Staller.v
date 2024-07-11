@@ -6,6 +6,6 @@ module Staller(
   output wire stall
 );
 
-  assign stall = stallReqID | stallReqMEM;
+  assign stall = stallReqID || stallReqMEM;
 
 endmodule

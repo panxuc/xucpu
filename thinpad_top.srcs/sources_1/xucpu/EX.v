@@ -19,6 +19,10 @@ module EX(
         writeDataOut = writeDataIn;
         memAddress = aluOut;
       end
+      default: begin
+        writeDataOut = writeDataIn;
+        memAddress = 32'h0;
+      end
     endcase
   end
 

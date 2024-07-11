@@ -25,6 +25,15 @@ module MEM(
   assign stallReq = (dataMemAddress >= 32'h80000000) && (dataMemAddress < 32'h80400000);
 
   always @(*) begin
+    if (rst) begin
+      writeDataOut = 32'h0;
+      dataMemReadEnable = 1'b0;
+      dataMemWriteEnable = 1'b0;
+      dataMemWriteData = 32'h0;
+      dataMemAddress = 32'h0;
+      dataMemByteEnable = 4'b0000;
+      dataMemChipSelect = 1'b0;
+    end
     case (memOp)
       `MEM_LB: begin
         writeDataOut = dataMemReadData[7:0];
@@ -73,6 +82,15 @@ module MEM(
         dataMemAddress = memAddress;
         dataMemByteEnable = 4'b1111;
         dataMemChipSelect = 1'b1;
+      end
+      default: begin
+        writeDataOut = writeDataIn;
+        dataMemReadEnable = 1'b0;
+        dataMemWriteEnable = 1'b0;
+        dataMemWriteData = 32'h0;
+        dataMemAddress = 32'h0;
+        dataMemByteEnable = 4'b0000;
+        dataMemChipSelect = 1'b0;
       end
     endcase
   end

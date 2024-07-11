@@ -14,8 +14,8 @@ module IF_ID(
       pcID <= 32'h0;
       instrID <= 32'h0;
     end else if (stall) begin
-      pcID <= 32'h0;
-      instrID <= 32'h0;
+      pcID <= pcID;
+      instrID <= instrID;
     end else begin
       pcID <= pcIF;
       instrID <= instrIF;

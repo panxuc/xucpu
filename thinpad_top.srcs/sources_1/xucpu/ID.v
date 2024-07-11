@@ -66,6 +66,9 @@ module ID(
 
   wire lastInstrLoad = memOpEX == `MEM_LW || memOpEX == `MEM_LB;
 
+  reg [31:0] branchReg1;
+  reg [31:0] branchReg2;
+
   reg stallReqReg1;
   reg stallReqReg2;
 
@@ -86,6 +89,8 @@ module ID(
       busB = 32'h0;
       aluOp = 3'h0;
       aluDst = 2'b0;
+      branchReg1 = 32'h0;
+      branchReg2 = 32'h0;
       stallReqReg1 = 1'b0;
       stallReqReg2 = 1'b0;
     end else begin
@@ -104,17 +109,29 @@ module ID(
       busB = 32'h0;
       aluOp = 3'h0;
       aluDst = 2'b0;
+      branchReg1 = 32'h0;
+      branchReg2 = 32'h0;
       stallReqReg1 = 1'b0;
       stallReqReg2 = 1'b0;
       case (opcode6)
         `JIRL: begin
-          branch = 1'b1;
           writeEnable = 1'b1;
           writeReg = rd;
           writeData = pc + 4;
           readEnable1 = 1'b1;
           readReg1 = rj;
-          branchAddress = readData1 + signExtend16;
+          branchReg1 = readData1;
+          if (lastInstrLoad && readReg1 == writeRegEX) begin
+            stallReqReg1 = 1'b1;
+          end else if (writeEnableEX && readReg1 == writeRegEX) begin
+            branchReg1 = writeDataEX;
+          end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+            branchReg1 = writeDataMEM;
+          end
+          if (~stallReqReg1) begin
+            branch = 1'b1;
+            branchAddress = branchReg1 + signExtend16;
+          end
         end
         `B: begin
           branch = 1'b1;
@@ -124,8 +141,24 @@ module ID(
           readEnable1 = 1'b1;
           readReg1 = rj;
           readEnable2 = 1'b1;
-          readReg2 = rk;
-          if (readData1 == readData2) begin
+          readReg2 = rd;
+          branchReg1 = readData1;
+          branchReg2 = readData2;
+          if (lastInstrLoad && readReg1 == writeRegEX) begin
+            stallReqReg1 = 1'b1;
+          end else if (writeEnableEX && readReg1 == writeRegEX) begin
+            branchReg1 = writeDataEX;
+          end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+            branchReg1 = writeDataMEM;
+          end
+          if (lastInstrLoad && readReg2 == writeRegEX) begin
+            stallReqReg2 = 1'b1;
+          end else if (writeEnableEX && readReg2 == writeRegEX) begin
+            branchReg2 = writeDataEX;
+          end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+            branchReg2 = writeDataMEM;
+          end
+          if (~stallReqReg1 && ~stallReqReg2 && branchReg1 == branchReg2) begin
             branch = 1'b1;
             branchAddress = pc + signExtend16;
           end
@@ -134,8 +167,24 @@ module ID(
           readEnable1 = 1'b1;
           readReg1 = rj;
           readEnable2 = 1'b1;
-          readReg2 = rk;
-          if (readData1 != readData2) begin
+          readReg2 = rd;
+          branchReg1 = readData1;
+          branchReg2 = readData2;
+          if (lastInstrLoad && readReg1 == writeRegEX) begin
+            stallReqReg1 = 1'b1;
+          end else if (writeEnableEX && readReg1 == writeRegEX) begin
+            branchReg1 = writeDataEX;
+          end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+            branchReg1 = writeDataMEM;
+          end
+          if (lastInstrLoad && readReg2 == writeRegEX) begin
+            stallReqReg2 = 1'b1;
+          end else if (writeEnableEX && readReg2 == writeRegEX) begin
+            branchReg2 = writeDataEX;
+          end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+            branchReg2 = writeDataMEM;
+          end
+          if (~stallReqReg1 && ~stallReqReg2 && branchReg1 != branchReg2) begin
             branch = 1'b1;
             branchAddress = pc + signExtend16;
           end
@@ -151,8 +200,24 @@ module ID(
           readEnable1 = 1'b1;
           readReg1 = rj;
           readEnable2 = 1'b1;
-          readReg2 = rk;
-          if ($unsigned(readData1) < $unsigned(readData2)) begin
+          readReg2 = rd;
+          branchReg1 = readData1;
+          branchReg2 = readData2;
+          if (lastInstrLoad && readReg1 == writeRegEX) begin
+            stallReqReg1 = 1'b1;
+          end else if (writeEnableEX && readReg1 == writeRegEX) begin
+            branchReg1 = writeDataEX;
+          end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+            branchReg1 = writeDataMEM;
+          end
+          if (lastInstrLoad && readReg2 == writeRegEX) begin
+            stallReqReg2 = 1'b1;
+          end else if (writeEnableEX && readReg2 == writeRegEX) begin
+            branchReg2 = writeDataEX;
+          end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+            branchReg2 = writeDataMEM;
+          end
+          if (~stallReqReg1 && ~stallReqReg2 && $unsigned(branchReg1) < $unsigned(branchReg2)) begin
             branch = 1'b1;
             branchAddress = pc + signExtend16;
           end
@@ -363,17 +428,16 @@ module ID(
           endcase
         end
       endcase
-      stallReqReg1 = 1'b0;
       if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
         busA = lastStoreData;
       end else if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX) begin
+        busA = 32'h0;
         stallReqReg1 = 1'b1;
       end else if (readEnable1 && writeEnableEX && readReg1 == writeRegEX) begin
         busA = writeDataEX;
       end else if (readEnable1 && writeEnableMEM && readReg1 == writeRegMEM) begin
         busA = writeDataMEM;
       end
-      stallReqReg2 = 1'b0;
       if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
         busB = lastStoreData;
       end else if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX) begin

@@ -10,12 +10,12 @@ module PC(
   always @(posedge clk) begin
     if (rst) begin
       pc <= 32'h80000000;
-    end else if (stall == 1'b0) begin
-      if (branch) begin
-        pc <= branchAddress;
-      end else begin
-        pc <= pc + 4;
-      end
+    end else if (stall) begin
+      pc <= pc;
+    end else if (branch) begin
+      pc <= branchAddress;
+    end else begin
+      pc <= pc + 4;
     end
   end
 

@@ -46,9 +46,7 @@ module CPU(
   wire [31:0] EXMemWriteDataOut;
 
   // MEM
-  wire MEMWriteEnableIn;
   wire MEMWriteEnableOut;
-  wire [4:0] MEMWriteRegIn;
   wire [4:0] MEMWriteRegOut;
   wire [31:0] MEMWriteDataIn;
   wire [31:0] MEMWriteDataOut;
@@ -208,8 +206,8 @@ module CPU(
     .writeEnableEX(EXWriteEnableOut),
     .writeRegEX(EXWriteRegOut),
     .writeDataEX(EXWriteDataOut),
-    .writeEnableMEM(MEMWriteEnableIn),
-    .writeRegMEM(MEMWriteRegIn),
+    .writeEnableMEM(MEMWriteEnableOut),
+    .writeRegMEM(MEMWriteRegOut),
     .writeDataMEM(MEMWriteDataIn),
     .memOpEX(EXMemOpOut),
     .memAddressEX(EXMemAddressOut),

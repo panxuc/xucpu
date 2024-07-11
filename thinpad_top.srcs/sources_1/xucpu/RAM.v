@@ -187,7 +187,7 @@ module RAM(
       ext_ram_oe_n = ~dataMemReadEnable;
       ext_ram_we_n = ~dataMemWriteEnable;
     end else begin
-      ext_ram_addr = instrMemAddress[21:2];
+      ext_ram_addr = 20'h0;
       ext_ram_be_n = 4'b0000;
       ext_ram_ce_n = 1'b0;
       ext_ram_oe_n = 1'b1;
