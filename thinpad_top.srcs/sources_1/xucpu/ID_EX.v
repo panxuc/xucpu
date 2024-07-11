@@ -1,6 +1,7 @@
 module ID_EX(
   input wire clk,
   input wire rst,
+  input wire stall,
 
   input wire writeEnableID,
   input wire [4:0] writeRegID,
@@ -34,6 +35,17 @@ module ID_EX(
       busAEX <= 32'h0;
       busBEX <= 32'h0;
       aluOpEX <= 3'h0;
+      aluDstEX <= 2'h0;
+    end else if (stall) begin
+      writeEnableEX <= 1'b0;
+      writeRegEX <= 5'h0;
+      writeDataEX <= 32'h0;
+      memOpEX <= 3'h0;
+      memWriteDataEX <= 32'h0;
+      busAEX <= 32'h0;
+      busBEX <= 32'h0;
+      aluOpEX <= 3'h0;
+      aluDstEX <= 2'h0;
     end else begin
       writeEnableEX <= writeEnableID;
       writeRegEX <= writeRegID;
@@ -43,6 +55,7 @@ module ID_EX(
       busAEX <= busAID;
       busBEX <= busBID;
       aluOpEX <= aluOpID;
+      aluDstEX <= aluDstID;
     end
   end
 

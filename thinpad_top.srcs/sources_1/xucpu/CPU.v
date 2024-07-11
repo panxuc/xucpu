@@ -2,7 +2,6 @@ module CPU(
   input wire clk,
   input wire rst,
 
-  output wire instrMemReadEnable,
   output wire [31:0] instrMemAddress,
   input wire [31:0] instrMemData,
 
@@ -19,7 +18,7 @@ module CPU(
   // IF
 
   // ID
-  wire IDPcIn;
+  wire [31:0] IDPcIn;
   wire [31:0] IDInstrIn;
 
   wire IDWriteEnableOut;
@@ -31,7 +30,7 @@ module CPU(
   wire [7:0] IDAluOpOut;
   wire [1:0] IDAluDstOut;
 
-  wire IDMemOpOut;
+  wire [7:0] IDMemOpOut;
   wire [31:0] IDMemWriteDataOut;
 
   // EX
@@ -42,7 +41,7 @@ module CPU(
 
   wire [1:0] EXAluDstIn;
 
-  wire EXMemOpOut;
+  wire [7:0] EXMemOpOut;
   wire [31:0] EXMemAddressOut;
   wire [31:0] EXMemWriteDataOut;
 
@@ -57,11 +56,6 @@ module CPU(
   wire [7:0] MEMMemOpIn;
   wire [31:0] MEMMemAddressIn;
   wire [31:0] MEMMemWriteDataIn;
-
-  // WB
-  wire WBWriteEnableIn;
-  wire [4:0] WBWriteRegIn;
-  wire [31:0] WBWriteDataIn;
 
   // PC
   wire stall;
@@ -91,14 +85,19 @@ module CPU(
   wire [31:0] RAMWriteData;
   wire [31:0] RAMReadData;
 
+  // Staller
+  wire stallReqID;
+  wire stallReqMEM;
+  wire [31:0] lastStoreAddress;
+  wire [31:0] lastStoreData;
+
   PC u_pc(
     .clk(clk),
     .rst(rst),
     .stall(stall),
     .branch(branch),
     .branchAddress(branchAddress),
-    .pc(instrMemAddress),
-    .ce(instrMemReadEnable)
+    .pc(instrMemAddress)
   );
 
   IF_ID u_if_id(
@@ -152,12 +151,18 @@ module CPU(
     .busA(IDBusAOut),
     .busB(IDBusBOut),
     .aluOp(IDAluOpOut),
-    .aluDst(IDAluDstOut)
+    .aluDst(IDAluDstOut),
+    .memOpEX(EXMemOpOut),
+    .memAddressEX(EXMemAddressOut),
+    .lastStoreAddress(lastStoreAddress),
+    .lastStoreData(lastStoreData),
+    .stallReq(stallReqID)
   );
 
   ID_EX u_id_ex(
     .clk(clk),
     .rst(rst),
+    .stall(stall),
     .writeEnableID(IDWriteEnableOut),
     .writeRegID(IDWriteRegOut),
     .writeDataID(IDWriteDataOut),
@@ -211,7 +216,9 @@ module CPU(
     .memWriteDataEX(EXMemWriteDataOut),
     .memOpMEM(MEMMemOpIn),
     .memAddressMEM(MEMMemAddressIn),
-    .memWriteDataMEM(MEMMemWriteDataIn)
+    .memWriteDataMEM(MEMMemWriteDataIn),
+    .lastStoreAddress(lastStoreAddress),
+    .lastStoreData(lastStoreData)
   );
 
   MEM u_mem(
@@ -228,7 +235,8 @@ module CPU(
     .dataMemWriteData(dataMemWriteData),
     .dataMemAddress(dataMemAddress),
     .dataMemByteEnable(dataMemByteEnable),
-    .dataMemChipSelect(dataMemChipSelect)
+    .dataMemChipSelect(dataMemChipSelect),
+    .stallReq(stallReqMEM)
   );
 
   MEM_WB u_mem_wb(
@@ -237,9 +245,17 @@ module CPU(
     .writeEnableMEM(MEMWriteEnableOut),
     .writeRegMEM(MEMWriteRegOut),
     .writeDataMEM(MEMWriteDataOut),
-    .writeEnableWB(WBWriteEnableIn),
-    .writeRegWB(WBWriteRegIn),
-    .writeDataWB(WBWriteDataIn)
+    .writeEnableWB(RegWriteEnable),
+    .writeRegWB(RegWriteReg),
+    .writeDataWB(RegWriteData)
+  );
+
+  Staller u_staller(
+    .clk(clk),
+    .rst(rst),
+    .stallReqID(stallReqID),
+    .stallReqMEM(stallReqMEM),
+    .stall(stall)
   );
 
 endmodule

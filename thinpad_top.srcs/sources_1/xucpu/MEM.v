@@ -17,8 +17,12 @@ module MEM(
   output reg [31:0] dataMemWriteData,
   output reg [31:0] dataMemAddress,
   output reg [3:0] dataMemByteEnable,
-  output reg dataMemChipSelect
+  output reg dataMemChipSelect,
+
+  output wire stallReq
 );
+
+  assign stallReq = (dataMemAddress >= 32'h80000000) && (dataMemAddress < 32'h80400000);
 
   always @(*) begin
     case (memOp)

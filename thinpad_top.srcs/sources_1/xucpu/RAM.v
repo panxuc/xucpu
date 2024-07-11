@@ -5,7 +5,6 @@ module RAM(
   output wire txd,
   input wire rxd,
 
-  input wire instrMemReadEnable,
   input wire [31:0] instrMemAddress,
   output reg [31:0] instrMemData,
 
