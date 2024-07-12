@@ -30,14 +30,11 @@ module RAM(
   output reg [3:0] ext_ram_be_n, //ExtRAM字节使能，低有效。如果不使用字节使能，请保持为0
   output reg ext_ram_ce_n, //ExtRAM片选，低有效
   output reg ext_ram_oe_n, //ExtRAM读使能，低有效
-  output reg ext_ram_we_n, //ExtRAM写使能，低有效
-
-  output wire [1:0] state
+  output reg ext_ram_we_n //ExtRAM写使能，低有效
 );
 
   `define SERIAL_STATE 32'hBFD003FC //串口状态地址
   `define SERIAL_DATA 32'hBFD003F8 //串口数据地址
-
 
   // 串口通信
 
@@ -45,26 +42,12 @@ module RAM(
   parameter BAUD = 9600;
 
   wire rxdDataReady;
-  wire rxdClear;
+  reg rxdClear;
   wire [7:0] rxdData;
 
-  wire txdStart;
-  wire [7:0] txdData;
+  reg txdStart;
+  reg [7:0] txdData;
   wire txdBusy;
-
-  wire [31:0] rxdFifoDin;
-  wire rxdFifoWrEn;
-  reg rxdFifoRdEn;
-  wire [31:0] rxdFifoDout;
-  wire rxdFifoFull;
-  wire rxdFifoEmpty;
-
-  reg [31:0] txdFifoDin;
-  reg txdFifoWrEn;
-  wire txdFifoRdEn;
-  wire [31:0] txdFifoDout;
-  wire txdFifoFull;
-  wire txdFifoEmpty;
 
   async_receiver #(.ClkFrequency(CLK_FREQ), .Baud(BAUD)) u_async_receiver(
     .clk(clk),
@@ -82,29 +65,7 @@ module RAM(
     .TxD_busy(txdBusy)
   );
 
-  fifo_generator_0 u_rxd_fifo(
-    .clk(clk),
-    .srst(rst),
-    .din(rxdFifoDin),
-    .wr_en(rxdFifoWrEn),
-    .rd_en(rxdFifoRdEn),
-    .dout(rxdFifoDout),
-    .full(rxdFifoFull),
-    .empty(rxdFifoEmpty)
-  );
-
-  fifo_generator_0 u_txd_fifo(
-    .clk(clk),
-    .srst(rst),
-    .din(txdFifoDin),
-    .wr_en(txdFifoWrEn),
-    .rd_en(txdFifoRdEn),
-    .dout(txdFifoDout),
-    .full(txdFifoFull),
-    .empty(txdFifoEmpty)
-  );
-
-  // 内存
+  // Serial
 
   wire serialState = (dataMemAddress == `SERIAL_STATE);
   wire serialData = (dataMemAddress == `SERIAL_DATA);
@@ -115,39 +76,55 @@ module RAM(
   wire [31:0] baseRAMOut;
   wire [31:0] extRAMOut;
 
-  assign state = {~rxdFifoEmpty, ~txdFifoFull};
-
-  assign txdFifoRdEn = txdStart;
-  assign txdStart = (~txdFifoEmpty) && (~txdBusy);
-  assign txdData = txdFifoDout;
-
-  assign rxdFifoWrEn = rxdDataReady;
-  assign rxdFifoDin = rxdData;
-  assign rxdClear = (~rxdFifoFull) && rxdDataReady;
-
   always @(*) begin
-    if (serialState) begin
-      txdFifoDin = 32'h00;
-      txdFifoWrEn = 1'b0;
-      rxdFifoRdEn = 1'b0;
-      serialOut = {30'b0, state};
-    end else if (serialData) begin
-      if (!dataMemWriteEnable) begin
-        txdFifoDin = 32'h00;
-        txdFifoWrEn = 1'b0;
-        rxdFifoRdEn = 1'b1;
-        serialOut = rxdFifoDout;
-      end else begin
-        txdFifoDin = dataMemWriteData;
-        txdFifoWrEn = 1'b1;
-        rxdFifoRdEn = 1'b0;
-        serialOut = 32'h00000000;
-      end
+    if (rst) begin
+      txdStart = 1'b0;
+      txdData = 8'h0;
+      serialOut = 32'h0;
     end else begin
-      txdFifoDin = 32'h00;
-      txdFifoWrEn = 1'b0;
-      rxdFifoRdEn = 1'b0;
-      serialOut = 32'h00000000;
+      if (serialState) begin
+        txdStart = 1'b0;
+        txdData = 8'h0;
+        serialOut = {30'b0, rxdDataReady, ~txdBusy};
+      end else if (serialData) begin
+        if (!dataMemWriteEnable) begin
+          txdStart = 1'b0;
+          txdData = 8'h0;
+          serialOut = {24'h0, rxdData};
+        end else begin
+          txdStart = 1'b1;
+          txdData = dataMemWriteData[7:0];
+          serialOut = 32'h0;
+        end
+      end else begin
+        txdStart = 1'b0;
+        txdData = 8'h0;
+        serialOut = 32'h0;
+      end
+    end
+  end
+
+  // Serial clear
+
+  reg rxdClearNext;
+
+  always @(negedge clk) begin
+    if (rst) begin
+      rxdClearNext = 1'b0;
+    end else begin
+      if (rxdDataReady && dataMemWriteEnable && serialData && !rxdClear) begin
+        rxdClearNext = 1'b1;
+      end else if (rxdClearNext) begin
+        rxdClearNext = 1'b0;
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    if (rst) begin
+      rxdClear = 1'b0;
+    end else begin
+      rxdClear = rxdClearNext;
     end
   end
 

@@ -1,6 +1,6 @@
 # XuCPU
 
-本实验需要实现一个 32 位 LoongArch CPU，支持 LoongArch-C3 指令集的 21 条指令：`ADDI.W, ADD.W, SUB.W, LU12I.W, PCADDU12I, OR, ORI, ANDI, AND, XOR, SRLI.W, SLLI.W, JIRL, B, BEQ, BNE, BL, ST.W, LD.W, ST.B, LD.B`。
+本实验需要实现一个 32 位 LoongArch CPU，支持 LoongArch-C3 指令集的 22 条指令：`ADDI.W, ADD.W, SUB.W, LU12I.W, PCADDU12I, OR, ORI, ANDI, AND, XOR, SRLI.W, SLLI.W, JIRL, B, BEQ, BNE, BL, ST.W, LD.W, ST.B, LD.B, MUL.W`。
 
 二级等级评测中的3条随机指令为：`SLTI, SRL.W, BLTU`
 
@@ -68,6 +68,7 @@
   <tr><td>LD.W</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td colspan="12">si12</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
   <tr><td>ST.B</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td colspan="12">si12</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
   <tr><td>LD.B</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td colspan="12">si12</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
+  <tr><td>MUL.W</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td colspan="5">rk</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
   <tr><td>SLTI</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td colspan="12">si12</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
   <tr><td>SRL.W</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td colspan="5">rk</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>
   <tr><td>BLTU</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td colspan="16">offs[15:0]</td><td colspan="5">rj</td><td colspan="5">rd</td></tr>

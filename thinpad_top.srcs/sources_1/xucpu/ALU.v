@@ -13,12 +13,13 @@ module ALU(
     case (aluOp)
       `ALU_ADD: aluOut = busA + busB;
       `ALU_SUB: aluOut = busA - busB;
-      `ALU_ADD: aluOut = busA & busB;
+      `ALU_AND: aluOut = busA & busB;
       `ALU_OR : aluOut = busA | busB;
       `ALU_XOR: aluOut = busA ^ busB;
       `ALU_SLL: aluOut = busA << busB[4:0];
       `ALU_SRL: aluOut = busA >> busB[4:0];
       `ALU_SLT: aluOut = (busA < busB) ? 32'h1 : 32'h0;
+      `ALU_MUL: aluOut = busA * busB;
     endcase
   end
 

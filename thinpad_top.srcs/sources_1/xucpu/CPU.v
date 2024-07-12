@@ -11,9 +11,7 @@ module CPU(
   output wire [31:0] dataMemWriteData,
   output wire [31:0] dataMemAddress,
   output wire [3:0] dataMemByteEnable,
-  output wire dataMemChipSelect,
-
-  input wire [1:0] state
+  output wire dataMemChipSelect
 );
   // IF
 

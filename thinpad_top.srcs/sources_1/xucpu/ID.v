@@ -408,6 +408,18 @@ module ID(
                       aluOp = `ALU_SLL;
                       aluDst = `DST_REG;
                     end
+                    `MUL_W: begin
+                      writeEnable = 1'b1;
+                      writeReg = rd;
+                      readEnable1 = 1'b1;
+                      readReg1 = rj;
+                      readEnable2 = 1'b1;
+                      readReg2 = rk;
+                      busA = readData1;
+                      busB = readData2;
+                      aluOp = `ALU_MUL;
+                      aluDst = `DST_REG;
+                    end
                     `SRL_W: begin
                       writeEnable = 1'b1;
                       writeReg = rd;

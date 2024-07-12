@@ -22,6 +22,7 @@
 `define LD_W      10'b0010100010
 `define ST_B      10'b0010100100
 `define LD_B      10'b0010100000
+`define MUL_W     17'b00000000000111000
 
 `define SLTI      10'b0000001000
 `define SRL_W     17'b00000000000101111

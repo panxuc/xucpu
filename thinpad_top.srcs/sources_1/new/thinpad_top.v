@@ -65,8 +65,6 @@ module thinpad_top(
     wire [3:0] dataMemByteEnable;
     wire dataMemChipSelect;
 
-    wire [1:0] state;
-
     CPU u_cpu(
         .clk(clk_50M),
         .rst(reset_btn),
@@ -78,8 +76,7 @@ module thinpad_top(
         .dataMemWriteData(dataMemWriteData),
         .dataMemAddress(dataMemAddress),
         .dataMemByteEnable(dataMemByteEnable),
-        .dataMemChipSelect(dataMemChipSelect),
-        .state(state)
+        .dataMemChipSelect(dataMemChipSelect)
     );
 
     RAM u_ram(
@@ -107,8 +104,7 @@ module thinpad_top(
         .ext_ram_be_n(ext_ram_be_n),
         .ext_ram_ce_n(ext_ram_ce_n),
         .ext_ram_oe_n(ext_ram_oe_n),
-        .ext_ram_we_n(ext_ram_we_n),
-        .state(state)
+        .ext_ram_we_n(ext_ram_we_n)
     );
 
 endmodule

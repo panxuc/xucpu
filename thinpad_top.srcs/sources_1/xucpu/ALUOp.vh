@@ -9,6 +9,7 @@
 `define ALU_SLL 8'b00000101
 `define ALU_SRL 8'b00000110
 `define ALU_SLT 8'b00000111
+`define ALU_MUL 8'b00001000
 
 `define DST_NOP 2'b00
 `define DST_REG 2'b01
