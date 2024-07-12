@@ -86,6 +86,7 @@ module CPU(
   // Staller
   wire stallReqID;
   wire stallReqMEM;
+  wire lastInstrBranch;
   wire [31:0] lastStoreAddress;
   wire [31:0] lastStoreData;
 
@@ -95,7 +96,8 @@ module CPU(
     .stall(stall),
     .branch(branch),
     .branchAddress(branchAddress),
-    .pc(instrMemAddress)
+    .pc(instrMemAddress),
+    .lastInstrBranch(lastInstrBranch)
   );
 
   IF_ID u_if_id(
@@ -150,6 +152,7 @@ module CPU(
     .busB(IDBusBOut),
     .aluOp(IDAluOpOut),
     .aluDst(IDAluDstOut),
+    .lastInstrBranch(lastInstrBranch),
     .memOpEX(EXMemOpOut),
     .memAddressEX(EXMemAddressOut),
     .lastStoreAddress(lastStoreAddress),

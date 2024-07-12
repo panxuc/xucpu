@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="166610fs"></ZoomStartTime>
-      <ZoomEndTime time="251959fs"></ZoomEndTime>
-      <Cursor1Time time="1000000fs"></Cursor1Time>
+      <ZoomStartTime time="80920fs"></ZoomStartTime>
+      <ZoomEndTime time="769921fs"></ZoomEndTime>
+      <Cursor1Time time="380920fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="361"></NameColumnWidth>
+      <NameColumnWidth column_width="353"></NameColumnWidth>
       <ValueColumnWidth column_width="120"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="118" />
+   <WVObjectSize size="116" />
    <wvobject type="logic" fp_name="/tb/dut/u_cpu/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -272,224 +272,216 @@
       <obj_property name="ElementShortName">rfData[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">rfData[31:0][31:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/clk">
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/rst">
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/pc">
-      <obj_property name="ElementShortName">pc[31:0]</obj_property>
-      <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txd">
+      <obj_property name="ElementShortName">txd</obj_property>
+      <obj_property name="ObjectShortName">txd</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/instr">
-      <obj_property name="ElementShortName">instr[31:0]</obj_property>
-      <obj_property name="ObjectShortName">instr[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxd">
+      <obj_property name="ElementShortName">rxd</obj_property>
+      <obj_property name="ObjectShortName">rxd</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/branch">
-      <obj_property name="ElementShortName">branch</obj_property>
-      <obj_property name="ObjectShortName">branch</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/instrMemAddress">
+      <obj_property name="ElementShortName">instrMemAddress[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instrMemAddress[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/branchAddress">
-      <obj_property name="ElementShortName">branchAddress[31:0]</obj_property>
-      <obj_property name="ObjectShortName">branchAddress[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/instrMemData">
+      <obj_property name="ElementShortName">instrMemData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instrMemData[31:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/readEnable1">
-      <obj_property name="ElementShortName">readEnable1</obj_property>
-      <obj_property name="ObjectShortName">readEnable1</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/dataMemReadEnable">
+      <obj_property name="ElementShortName">dataMemReadEnable</obj_property>
+      <obj_property name="ObjectShortName">dataMemReadEnable</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/readReg1">
-      <obj_property name="ElementShortName">readReg1[4:0]</obj_property>
-      <obj_property name="ObjectShortName">readReg1[4:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/dataMemWriteEnable">
+      <obj_property name="ElementShortName">dataMemWriteEnable</obj_property>
+      <obj_property name="ObjectShortName">dataMemWriteEnable</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/readData1">
-      <obj_property name="ElementShortName">readData1[31:0]</obj_property>
-      <obj_property name="ObjectShortName">readData1[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/dataMemReadData">
+      <obj_property name="ElementShortName">dataMemReadData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dataMemReadData[31:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/readEnable2">
-      <obj_property name="ElementShortName">readEnable2</obj_property>
-      <obj_property name="ObjectShortName">readEnable2</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/dataMemWriteData">
+      <obj_property name="ElementShortName">dataMemWriteData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dataMemWriteData[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/readReg2">
-      <obj_property name="ElementShortName">readReg2[4:0]</obj_property>
-      <obj_property name="ObjectShortName">readReg2[4:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/dataMemAddress">
+      <obj_property name="ElementShortName">dataMemAddress[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dataMemAddress[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/readData2">
-      <obj_property name="ElementShortName">readData2[31:0]</obj_property>
-      <obj_property name="ObjectShortName">readData2[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/dataMemByteEnable">
+      <obj_property name="ElementShortName">dataMemByteEnable[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dataMemByteEnable[3:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/writeEnable">
-      <obj_property name="ElementShortName">writeEnable</obj_property>
-      <obj_property name="ObjectShortName">writeEnable</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/dataMemChipSelect">
+      <obj_property name="ElementShortName">dataMemChipSelect</obj_property>
+      <obj_property name="ObjectShortName">dataMemChipSelect</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeReg">
-      <obj_property name="ElementShortName">writeReg[4:0]</obj_property>
-      <obj_property name="ObjectShortName">writeReg[4:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/base_ram_data">
+      <obj_property name="ElementShortName">base_ram_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">base_ram_data[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeData">
-      <obj_property name="ElementShortName">writeData[31:0]</obj_property>
-      <obj_property name="ObjectShortName">writeData[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/base_ram_addr">
+      <obj_property name="ElementShortName">base_ram_addr[19:0]</obj_property>
+      <obj_property name="ObjectShortName">base_ram_addr[19:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/writeEnableEX">
-      <obj_property name="ElementShortName">writeEnableEX</obj_property>
-      <obj_property name="ObjectShortName">writeEnableEX</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/base_ram_be_n">
+      <obj_property name="ElementShortName">base_ram_be_n[3:0]</obj_property>
+      <obj_property name="ObjectShortName">base_ram_be_n[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeRegEX">
-      <obj_property name="ElementShortName">writeRegEX[4:0]</obj_property>
-      <obj_property name="ObjectShortName">writeRegEX[4:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/base_ram_ce_n">
+      <obj_property name="ElementShortName">base_ram_ce_n</obj_property>
+      <obj_property name="ObjectShortName">base_ram_ce_n</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeDataEX">
-      <obj_property name="ElementShortName">writeDataEX[31:0]</obj_property>
-      <obj_property name="ObjectShortName">writeDataEX[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/base_ram_oe_n">
+      <obj_property name="ElementShortName">base_ram_oe_n</obj_property>
+      <obj_property name="ObjectShortName">base_ram_oe_n</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/writeEnableMEM">
-      <obj_property name="ElementShortName">writeEnableMEM</obj_property>
-      <obj_property name="ObjectShortName">writeEnableMEM</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/base_ram_we_n">
+      <obj_property name="ElementShortName">base_ram_we_n</obj_property>
+      <obj_property name="ObjectShortName">base_ram_we_n</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeRegMEM">
-      <obj_property name="ElementShortName">writeRegMEM[4:0]</obj_property>
-      <obj_property name="ObjectShortName">writeRegMEM[4:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/ext_ram_data">
+      <obj_property name="ElementShortName">ext_ram_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_data[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/writeDataMEM">
-      <obj_property name="ElementShortName">writeDataMEM[31:0]</obj_property>
-      <obj_property name="ObjectShortName">writeDataMEM[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/ext_ram_addr">
+      <obj_property name="ElementShortName">ext_ram_addr[19:0]</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_addr[19:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/memOp">
-      <obj_property name="ElementShortName">memOp[7:0]</obj_property>
-      <obj_property name="ObjectShortName">memOp[7:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/ext_ram_be_n">
+      <obj_property name="ElementShortName">ext_ram_be_n[3:0]</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_be_n[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/memWriteData">
-      <obj_property name="ElementShortName">memWriteData[31:0]</obj_property>
-      <obj_property name="ObjectShortName">memWriteData[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/ext_ram_ce_n">
+      <obj_property name="ElementShortName">ext_ram_ce_n</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_ce_n</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/busA">
-      <obj_property name="ElementShortName">busA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">busA[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/ext_ram_oe_n">
+      <obj_property name="ElementShortName">ext_ram_oe_n</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_oe_n</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/busB">
-      <obj_property name="ElementShortName">busB[31:0]</obj_property>
-      <obj_property name="ObjectShortName">busB[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/ext_ram_we_n">
+      <obj_property name="ElementShortName">ext_ram_we_n</obj_property>
+      <obj_property name="ObjectShortName">ext_ram_we_n</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/aluOp">
-      <obj_property name="ElementShortName">aluOp[7:0]</obj_property>
-      <obj_property name="ObjectShortName">aluOp[7:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/state">
+      <obj_property name="ElementShortName">state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state[1:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/aluDst">
-      <obj_property name="ElementShortName">aluDst[1:0]</obj_property>
-      <obj_property name="ObjectShortName">aluDst[1:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdDataReady">
+      <obj_property name="ElementShortName">rxdDataReady</obj_property>
+      <obj_property name="ObjectShortName">rxdDataReady</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/memOpEX">
-      <obj_property name="ElementShortName">memOpEX[7:0]</obj_property>
-      <obj_property name="ObjectShortName">memOpEX[7:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdClear">
+      <obj_property name="ElementShortName">rxdClear</obj_property>
+      <obj_property name="ObjectShortName">rxdClear</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/memAddressEX">
-      <obj_property name="ElementShortName">memAddressEX[31:0]</obj_property>
-      <obj_property name="ObjectShortName">memAddressEX[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/rxdData">
+      <obj_property name="ElementShortName">rxdData[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rxdData[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/lastStoreAddress">
-      <obj_property name="ElementShortName">lastStoreAddress[31:0]</obj_property>
-      <obj_property name="ObjectShortName">lastStoreAddress[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdStart">
+      <obj_property name="ElementShortName">txdStart</obj_property>
+      <obj_property name="ObjectShortName">txdStart</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/lastStoreData">
-      <obj_property name="ElementShortName">lastStoreData[31:0]</obj_property>
-      <obj_property name="ObjectShortName">lastStoreData[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/txdData">
+      <obj_property name="ElementShortName">txdData[7:0]</obj_property>
+      <obj_property name="ObjectShortName">txdData[7:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/stallReq">
-      <obj_property name="ElementShortName">stallReq</obj_property>
-      <obj_property name="ObjectShortName">stallReq</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdBusy">
+      <obj_property name="ElementShortName">txdBusy</obj_property>
+      <obj_property name="ObjectShortName">txdBusy</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/opcode17">
-      <obj_property name="ElementShortName">opcode17[16:0]</obj_property>
-      <obj_property name="ObjectShortName">opcode17[16:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/rxdFifoDin">
+      <obj_property name="ElementShortName">rxdFifoDin[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoDin[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/opcode10">
-      <obj_property name="ElementShortName">opcode10[9:0]</obj_property>
-      <obj_property name="ObjectShortName">opcode10[9:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdFifoWrEn">
+      <obj_property name="ElementShortName">rxdFifoWrEn</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoWrEn</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/opcode7">
-      <obj_property name="ElementShortName">opcode7[6:0]</obj_property>
-      <obj_property name="ObjectShortName">opcode7[6:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdFifoRdEn">
+      <obj_property name="ElementShortName">rxdFifoRdEn</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoRdEn</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/opcode6">
-      <obj_property name="ElementShortName">opcode6[5:0]</obj_property>
-      <obj_property name="ObjectShortName">opcode6[5:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/rxdFifoDout">
+      <obj_property name="ElementShortName">rxdFifoDout[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoDout[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/rk">
-      <obj_property name="ElementShortName">rk[4:0]</obj_property>
-      <obj_property name="ObjectShortName">rk[4:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdFifoFull">
+      <obj_property name="ElementShortName">rxdFifoFull</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoFull</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/rj">
-      <obj_property name="ElementShortName">rj[4:0]</obj_property>
-      <obj_property name="ObjectShortName">rj[4:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/rxdFifoEmpty">
+      <obj_property name="ElementShortName">rxdFifoEmpty</obj_property>
+      <obj_property name="ObjectShortName">rxdFifoEmpty</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/rd">
-      <obj_property name="ElementShortName">rd[4:0]</obj_property>
-      <obj_property name="ObjectShortName">rd[4:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/txdFifoDin">
+      <obj_property name="ElementShortName">txdFifoDin[31:0]</obj_property>
+      <obj_property name="ObjectShortName">txdFifoDin[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/ui5">
-      <obj_property name="ElementShortName">ui5[4:0]</obj_property>
-      <obj_property name="ObjectShortName">ui5[4:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdFifoWrEn">
+      <obj_property name="ElementShortName">txdFifoWrEn</obj_property>
+      <obj_property name="ObjectShortName">txdFifoWrEn</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/si12">
-      <obj_property name="ElementShortName">si12[11:0]</obj_property>
-      <obj_property name="ObjectShortName">si12[11:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdFifoRdEn">
+      <obj_property name="ElementShortName">txdFifoRdEn</obj_property>
+      <obj_property name="ObjectShortName">txdFifoRdEn</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/si20">
-      <obj_property name="ElementShortName">si20[19:0]</obj_property>
-      <obj_property name="ObjectShortName">si20[19:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/txdFifoDout">
+      <obj_property name="ElementShortName">txdFifoDout[31:0]</obj_property>
+      <obj_property name="ObjectShortName">txdFifoDout[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/offs16">
-      <obj_property name="ElementShortName">offs16[15:0]</obj_property>
-      <obj_property name="ObjectShortName">offs16[15:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdFifoFull">
+      <obj_property name="ElementShortName">txdFifoFull</obj_property>
+      <obj_property name="ObjectShortName">txdFifoFull</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/offs26">
-      <obj_property name="ElementShortName">offs26[25:0]</obj_property>
-      <obj_property name="ObjectShortName">offs26[25:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/txdFifoEmpty">
+      <obj_property name="ElementShortName">txdFifoEmpty</obj_property>
+      <obj_property name="ObjectShortName">txdFifoEmpty</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/signExtend12">
-      <obj_property name="ElementShortName">signExtend12[31:0]</obj_property>
-      <obj_property name="ObjectShortName">signExtend12[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/serialState">
+      <obj_property name="ElementShortName">serialState</obj_property>
+      <obj_property name="ObjectShortName">serialState</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/zeroExtend12">
-      <obj_property name="ElementShortName">zeroExtend12[31:0]</obj_property>
-      <obj_property name="ObjectShortName">zeroExtend12[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/serialData">
+      <obj_property name="ElementShortName">serialData</obj_property>
+      <obj_property name="ObjectShortName">serialData</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/signExtend16">
-      <obj_property name="ElementShortName">signExtend16[31:0]</obj_property>
-      <obj_property name="ObjectShortName">signExtend16[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/baseRAM">
+      <obj_property name="ElementShortName">baseRAM</obj_property>
+      <obj_property name="ObjectShortName">baseRAM</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/signExtend20">
-      <obj_property name="ElementShortName">signExtend20[31:0]</obj_property>
-      <obj_property name="ObjectShortName">signExtend20[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/extRAM">
+      <obj_property name="ElementShortName">extRAM</obj_property>
+      <obj_property name="ObjectShortName">extRAM</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/dontExtend20">
-      <obj_property name="ElementShortName">dontExtend20[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dontExtend20[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/serialOut">
+      <obj_property name="ElementShortName">serialOut[31:0]</obj_property>
+      <obj_property name="ObjectShortName">serialOut[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/signExtend26">
-      <obj_property name="ElementShortName">signExtend26[31:0]</obj_property>
-      <obj_property name="ObjectShortName">signExtend26[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/baseRAMOut">
+      <obj_property name="ElementShortName">baseRAMOut[31:0]</obj_property>
+      <obj_property name="ObjectShortName">baseRAMOut[31:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/lastInstrLoad">
-      <obj_property name="ElementShortName">lastInstrLoad</obj_property>
-      <obj_property name="ObjectShortName">lastInstrLoad</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/extRAMOut">
+      <obj_property name="ElementShortName">extRAMOut[31:0]</obj_property>
+      <obj_property name="ObjectShortName">extRAMOut[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/branchReg1">
-      <obj_property name="ElementShortName">branchReg1[31:0]</obj_property>
-      <obj_property name="ObjectShortName">branchReg1[31:0]</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/CLK_FREQ">
+      <obj_property name="ElementShortName">CLK_FREQ[31:0]</obj_property>
+      <obj_property name="ObjectShortName">CLK_FREQ[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/branchReg2">
-      <obj_property name="ElementShortName">branchReg2[31:0]</obj_property>
-      <obj_property name="ObjectShortName">branchReg2[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/stallReqReg1">
-      <obj_property name="ElementShortName">stallReqReg1</obj_property>
-      <obj_property name="ObjectShortName">stallReqReg1</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/stallReqReg2">
-      <obj_property name="ElementShortName">stallReqReg2</obj_property>
-      <obj_property name="ObjectShortName">stallReqReg2</obj_property>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/BAUD">
+      <obj_property name="ElementShortName">BAUD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">BAUD[31:0]</obj_property>
    </wvobject>
 </wave_config>
