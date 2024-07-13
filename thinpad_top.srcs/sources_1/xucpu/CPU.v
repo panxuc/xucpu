@@ -150,7 +150,7 @@ module CPU(
     .busB(IDBusBOut),
     .aluOp(IDAluOpOut),
     .aluDst(IDAluDstOut),
-    .lastInstrBranch(lastInstrBranch),
+    .flush(lastInstrBranch),
     .memOpEX(EXMemOpOut),
     .memAddressEX(EXMemAddressOut),
     .lastStoreAddress(lastStoreAddress),

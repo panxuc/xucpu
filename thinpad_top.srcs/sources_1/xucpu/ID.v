@@ -36,7 +36,7 @@ module ID(
   output reg [7:0] aluOp,
   output reg [1:0] aluDst,
 
-  input wire lastInstrBranch,
+  input wire flush,
   input wire [7:0] memOpEX,
   input wire [31:0] memAddressEX,
   input wire [31:0] lastStoreAddress,
@@ -74,7 +74,7 @@ module ID(
   reg stallReqReg2;
 
   always @(*) begin
-    if (rst || lastInstrBranch) begin
+    if (rst || flush) begin
       branch = 1'b0;
       branchAddress = 32'h0;
       readEnable1 = 1'b0;

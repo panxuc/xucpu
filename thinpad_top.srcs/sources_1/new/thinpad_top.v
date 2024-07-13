@@ -55,6 +55,33 @@ module thinpad_top(
 
     assign leds = dip_sw[15:0];
 
+    wire locked, clk_100M, clk_80M, clk_60M;
+    reg reset_of_clk100M, reset_of_clk80M, reset_of_clk60M;
+
+    pll_example clk_gen(
+        .clk_in1(clk_50M),
+        .clk_out1(clk_100M),
+        .clk_out2(clk_80M),
+        .clk_out3(clk_60M),
+        .reset(reset_btn),
+        .locked(locked)
+    );
+
+    always @(posedge clk_100M or negedge locked) begin
+        if (~locked) reset_of_clk100M <= 1'b1;
+        else reset_of_clk100M <= 1'b0;
+    end
+
+    always @(posedge clk_80M or negedge locked) begin
+        if (~locked) reset_of_clk80M <= 1'b1;
+        else reset_of_clk80M <= 1'b0;
+    end
+
+    always @(posedge clk_60M or negedge locked) begin
+        if (~locked) reset_of_clk60M <= 1'b1;
+        else reset_of_clk60M <= 1'b0;
+    end
+
     wire [31:0] instrMemAddress;
     wire [31:0] instrMemData;
     wire dataMemReadEnable;

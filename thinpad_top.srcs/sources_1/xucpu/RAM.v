@@ -145,7 +145,7 @@ module RAM(
 
   // baseRAM
 
-  assign base_ram_data = baseRAM ? ((dataMemWriteEnable) ? dataMemWriteData : 32'hzzzzzzzz) : 32'hzzzzzzzz;
+  assign base_ram_data = (baseRAM && dataMemWriteEnable) ? dataMemWriteData : 32'hzzzzzzzz;
   assign baseRAMOut = base_ram_data;
 
   always @(*) begin
@@ -168,7 +168,7 @@ module RAM(
 
   // extRAM
 
-  assign ext_ram_data = extRAM ? ((dataMemWriteEnable) ? dataMemWriteData : 32'hzzzzzzzz) : 32'hzzzzzzzz;
+  assign ext_ram_data = (extRAM && dataMemWriteEnable) ? dataMemWriteData : 32'hzzzzzzzz;
   assign extRAMOut = ext_ram_data;
 
   always @(*) begin
