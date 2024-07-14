@@ -439,28 +439,28 @@ module ID(
               endcase
             end
           endcase
+          if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            busA = lastStoreData;
+          end else if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX) begin
+            busA = 32'h0;
+            stallReqReg1 = 1'b1;
+          end else if (readEnable1 && writeEnableEX && readReg1 == writeRegEX) begin
+            busA = writeDataEX;
+          end else if (readEnable1 && writeEnableMEM && readReg1 == writeRegMEM) begin
+            busA = writeDataMEM;
+          end
+          if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            busB = lastStoreData;
+          end else if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX) begin
+            busB = 32'h0;
+            stallReqReg2 = 1'b1;
+          end else if (readEnable2 && writeEnableEX && readReg2 == writeRegEX) begin
+            busB = writeDataEX;
+          end else if (readEnable2 && writeEnableMEM && readReg2 == writeRegMEM) begin
+            busB = writeDataMEM;
+          end
         end
       endcase
-      if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
-        busA = lastStoreData;
-      end else if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX) begin
-        busA = 32'h0;
-        stallReqReg1 = 1'b1;
-      end else if (readEnable1 && writeEnableEX && readReg1 == writeRegEX) begin
-        busA = writeDataEX;
-      end else if (readEnable1 && writeEnableMEM && readReg1 == writeRegMEM) begin
-        busA = writeDataMEM;
-      end
-      if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
-        busB = lastStoreData;
-      end else if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX) begin
-        busB = 32'h0;
-        stallReqReg2 = 1'b1;
-      end else if (readEnable2 && writeEnableEX && readReg2 == writeRegEX) begin
-        busB = writeDataEX;
-      end else if (readEnable2 && writeEnableMEM && readReg2 == writeRegMEM) begin
-        busB = writeDataMEM;
-      end
     end
   end
 

@@ -12,12 +12,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="12950200fs"></ZoomStartTime>
-      <ZoomEndTime time="14802201fs"></ZoomEndTime>
-      <Cursor1Time time="13351200fs"></Cursor1Time>
+      <ZoomStartTime time="10291477fs"></ZoomStartTime>
+      <ZoomEndTime time="10365178fs"></ZoomEndTime>
+      <Cursor1Time time="10322477fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="313"></NameColumnWidth>
+      <NameColumnWidth column_width="305"></NameColumnWidth>
       <ValueColumnWidth column_width="120"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="181" />
@@ -377,9 +377,9 @@
       <obj_property name="ElementShortName">aluDst[1:0]</obj_property>
       <obj_property name="ObjectShortName">aluDst[1:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/lastInstrBranch">
-      <obj_property name="ElementShortName">lastInstrBranch</obj_property>
-      <obj_property name="ObjectShortName">lastInstrBranch</obj_property>
+   <wvobject type="logic" fp_name="/tb/dut/u_cpu/u_id/flush">
+      <obj_property name="ElementShortName">flush</obj_property>
+      <obj_property name="ObjectShortName">flush</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/tb/dut/u_cpu/u_id/memOpEX">
       <obj_property name="ElementShortName">memOpEX[7:0]</obj_property>

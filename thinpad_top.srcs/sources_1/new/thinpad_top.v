@@ -93,8 +93,8 @@ module thinpad_top(
     wire dataMemChipSelect;
 
     CPU u_cpu(
-        .clk(clk_50M),
-        .rst(reset_btn),
+        .clk(clk_60M),
+        .rst(reset_of_clk60M),
         .instrMemAddress(instrMemAddress),
         .instrMemData(instrMemData),
         .dataMemReadEnable(dataMemReadEnable),
@@ -107,8 +107,8 @@ module thinpad_top(
     );
 
     RAM u_ram(
-        .clk(clk_50M),
-        .rst(reset_btn),
+        .clk(clk_60M),
+        .rst(reset_of_clk60M),
         .txd(txd),
         .rxd(rxd),
         .instrMemAddress(instrMemAddress),
