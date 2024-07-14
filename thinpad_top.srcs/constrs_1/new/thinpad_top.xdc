@@ -288,14 +288,14 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
 set cpu_clk [get_clocks -of_objects  [get_pins clk_gen/clk_out3]]
-set uart_delay 10
-set ram_input_delay 17
-set ram_output_delay 12
+set uart_delay 4
+set ram_input_delay 4
+set ram_output_delay 4
 
 set_input_delay -clock $cpu_clk $ram_input_delay [get_ports base_ram_data[*]] 
 set_input_delay -clock $cpu_clk $ram_input_delay [get_ports ext_ram_data[*]] 
 
-set_input_delay -clock $cpu_clk $ram_output_delay [get_ports reset_btn] 
+set_input_delay -clock $cpu_clk $ram_input_delay [get_ports reset_btn] 
 
 set_output_delay -clock $cpu_clk $ram_output_delay [get_ports base_ram_addr[*]] 
 set_output_delay -clock $cpu_clk $ram_output_delay [get_ports base_ram_be_n[*]] 
