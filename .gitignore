@@ -1,6 +1,3 @@
-*.bin
-*.o
-*.elf
 ipshared/
 *_netlist.*
 *_stub.*
