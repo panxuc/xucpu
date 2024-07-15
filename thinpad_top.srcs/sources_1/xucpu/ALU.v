@@ -18,7 +18,7 @@ module ALU(
       `ALU_XOR: aluOut = busA ^ busB;
       `ALU_SLL: aluOut = busA << busB[4:0];
       `ALU_SRL: aluOut = busA >> busB[4:0];
-      `ALU_SLT: aluOut = (busA < busB) ? 32'h1 : 32'h0;
+      `ALU_SLT: aluOut = ($signed(busA) < $signed(busB)) ? 32'h1 : 32'h0;
       `ALU_MUL: aluOut = busA * busB;
     endcase
   end

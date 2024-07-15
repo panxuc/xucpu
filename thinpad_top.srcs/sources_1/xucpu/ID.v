@@ -74,7 +74,27 @@ module ID(
   reg stallReqReg2;
 
   always @(*) begin
-    if (rst || flush) begin
+    if (rst) begin
+      branch = 1'b0;
+      branchAddress = 32'h0;
+      readEnable1 = 1'b0;
+      readReg1 = 5'h0;
+      readEnable2 = 1'b0;
+      readReg2 = 5'h0;
+      writeEnable = 1'b0;
+      writeReg = 5'h0;
+      writeData = 32'h0;
+      memOp = 3'b0;
+      memWriteData = 32'h0;
+      busA = 32'h0;
+      busB = 32'h0;
+      aluOp = 3'h0;
+      aluDst = 2'b0;
+      branchReg1 = 32'h0;
+      branchReg2 = 32'h0;
+      stallReqReg1 = 1'b0;
+      stallReqReg2 = 1'b0;
+    end else if (flush) begin
       branch = 1'b0;
       branchAddress = 32'h0;
       readEnable1 = 1'b0;
@@ -121,13 +141,14 @@ module ID(
           writeData = pc + 4;
           readEnable1 = 1'b1;
           readReg1 = rj;
-          branchReg1 = readData1;
           if (lastInstrLoad && readReg1 == writeRegEX) begin
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
           end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
             branchReg1 = writeDataMEM;
+          end else begin
+            branchReg1 = readData1;
           end
           if (~stallReqReg1) begin
             branch = 1'b1;
@@ -143,14 +164,14 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          branchReg1 = readData1;
-          branchReg2 = readData2;
           if (lastInstrLoad && readReg1 == writeRegEX) begin
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
           end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
             branchReg1 = writeDataMEM;
+          end else begin
+            branchReg1 = readData1;
           end
           if (lastInstrLoad && readReg2 == writeRegEX) begin
             stallReqReg2 = 1'b1;
@@ -158,6 +179,8 @@ module ID(
             branchReg2 = writeDataEX;
           end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
             branchReg2 = writeDataMEM;
+          end else begin
+            branchReg2 = readData2;
           end
           if (~stallReqReg1 && ~stallReqReg2 && branchReg1 == branchReg2) begin
             branch = 1'b1;
@@ -169,14 +192,14 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          branchReg1 = readData1;
-          branchReg2 = readData2;
           if (lastInstrLoad && readReg1 == writeRegEX) begin
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
           end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
             branchReg1 = writeDataMEM;
+          end else begin
+            branchReg1 = readData1;
           end
           if (lastInstrLoad && readReg2 == writeRegEX) begin
             stallReqReg2 = 1'b1;
@@ -184,6 +207,8 @@ module ID(
             branchReg2 = writeDataEX;
           end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
             branchReg2 = writeDataMEM;
+          end else begin
+            branchReg2 = readData2;
           end
           if (~stallReqReg1 && ~stallReqReg2 && branchReg1 != branchReg2) begin
             branch = 1'b1;
@@ -202,14 +227,14 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          branchReg1 = readData1;
-          branchReg2 = readData2;
           if (lastInstrLoad && readReg1 == writeRegEX) begin
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
           end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
             branchReg1 = writeDataMEM;
+          end else begin
+            branchReg1 = readData1;
           end
           if (lastInstrLoad && readReg2 == writeRegEX) begin
             stallReqReg2 = 1'b1;
@@ -217,6 +242,8 @@ module ID(
             branchReg2 = writeDataEX;
           end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
             branchReg2 = writeDataMEM;
+          end else begin
+            branchReg2 = readData2;
           end
           if (~stallReqReg1 && ~stallReqReg2 && $unsigned(branchReg1) < $unsigned(branchReg2)) begin
             branch = 1'b1;
@@ -245,7 +272,18 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_ADD;
                   aluDst = `DST_REG;
@@ -255,7 +293,18 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = zeroExtend12;
                   aluOp = `ALU_OR;
                   aluDst = `DST_REG;
@@ -265,7 +314,18 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = zeroExtend12;
                   aluOp = `ALU_AND;
                   aluDst = `DST_REG;
@@ -276,8 +336,30 @@ module ID(
                   readEnable2 = 1'b1;
                   readReg2 = rd;
                   memOp = `MEM_SW;
-                  memWriteData = readData2[31:0];
-                  busA = readData1;
+                  if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    memWriteData = lastStoreData;
+                  end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                    memWriteData = 32'h0;
+                    stallReqReg2 = 1'b1;
+                  end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                    memWriteData = writeDataEX;
+                  end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                    memWriteData = writeDataMEM;
+                  end else begin
+                    memWriteData = readData2;
+                  end
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_ADD;
                   aluDst = `DST_MEM;
@@ -288,7 +370,18 @@ module ID(
                   readEnable1 = 1'b1;
                   readReg1 = rj;
                   memOp = `MEM_LW;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_ADD;
                   aluDst = `DST_MEM;
@@ -299,8 +392,30 @@ module ID(
                   readEnable2 = 1'b1;
                   readReg2 = rd;
                   memOp = `MEM_SB;
-                  memWriteData = readData2[7:0];
-                  busA = readData1;
+                  if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    memWriteData = {24'h0, lastStoreData[7:0]};
+                  end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                    memWriteData = 32'h0;
+                    stallReqReg2 = 1'b1;
+                  end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                    memWriteData = {24'h0, writeDataEX[7:0]};
+                  end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                    memWriteData = {24'h0, writeDataMEM[7:0]};
+                  end else begin
+                    memWriteData = {24'h0, readData2[7:0]};
+                  end
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_ADD;
                   aluDst = `DST_MEM;
@@ -311,7 +426,18 @@ module ID(
                   readEnable1 = 1'b1;
                   readReg1 = rj;
                   memOp = `MEM_LB;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_ADD;
                   aluDst = `DST_MEM;
@@ -321,7 +447,18 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  busA = readData1;
+                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                    busA = lastStoreData;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                    busA = 32'h0;
+                    stallReqReg1 = 1'b1;
+                  end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                    busA = writeDataEX;
+                  end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                    busA = writeDataMEM;
+                  end else begin
+                    busA = readData1;
+                  end
                   busB = signExtend12;
                   aluOp = `ALU_SLT;
                   aluDst = `DST_REG;
@@ -335,8 +472,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_ADD;
                       aluDst = `DST_REG;
                     end
@@ -347,8 +506,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_SUB;
                       aluDst = `DST_REG;
                     end
@@ -359,8 +540,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_OR;
                       aluDst = `DST_REG;
                     end
@@ -371,8 +574,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_AND;
                       aluDst = `DST_REG;
                     end
@@ -383,8 +608,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_XOR;
                       aluDst = `DST_REG;
                     end
@@ -393,7 +640,18 @@ module ID(
                       writeReg = rd;
                       readEnable1 = 1'b1;
                       readReg1 = rj;
-                      busA = readData1;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
                       busB = ui5;
                       aluOp = `ALU_SRL;
                       aluDst = `DST_REG;
@@ -403,7 +661,18 @@ module ID(
                       writeReg = rd;
                       readEnable1 = 1'b1;
                       readReg1 = rj;
-                      busA = readData1;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
                       busB = ui5;
                       aluOp = `ALU_SLL;
                       aluDst = `DST_REG;
@@ -415,8 +684,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_MUL;
                       aluDst = `DST_REG;
                     end
@@ -427,8 +718,30 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      busA = readData1;
-                      busB = readData2;
+                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busA = lastStoreData;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+                        busA = 32'h0;
+                        stallReqReg1 = 1'b1;
+                      end else if (writeEnableEX && readReg1 == writeRegEX) begin
+                        busA = writeDataEX;
+                      end else if (writeEnableMEM && readReg1 == writeRegMEM) begin
+                        busA = writeDataMEM;
+                      end else begin
+                        busA = readData1;
+                      end
+                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                        busB = lastStoreData;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+                        busB = 32'h0;
+                        stallReqReg2 = 1'b1;
+                      end else if (writeEnableEX && readReg2 == writeRegEX) begin
+                        busB = writeDataEX;
+                      end else if (writeEnableMEM && readReg2 == writeRegMEM) begin
+                        busB = writeDataMEM;
+                      end else begin
+                        busB = readData2;
+                      end
                       aluOp = `ALU_SRL;
                       aluDst = `DST_REG;
                     end
@@ -439,26 +752,6 @@ module ID(
               endcase
             end
           endcase
-          if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
-            busA = lastStoreData;
-          end else if (readEnable1 && lastInstrLoad && readReg1 == writeRegEX) begin
-            busA = 32'h0;
-            stallReqReg1 = 1'b1;
-          end else if (readEnable1 && writeEnableEX && readReg1 == writeRegEX) begin
-            busA = writeDataEX;
-          end else if (readEnable1 && writeEnableMEM && readReg1 == writeRegMEM) begin
-            busA = writeDataMEM;
-          end
-          if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
-            busB = lastStoreData;
-          end else if (readEnable2 && lastInstrLoad && readReg2 == writeRegEX) begin
-            busB = 32'h0;
-            stallReqReg2 = 1'b1;
-          end else if (readEnable2 && writeEnableEX && readReg2 == writeRegEX) begin
-            busB = writeDataEX;
-          end else if (readEnable2 && writeEnableMEM && readReg2 == writeRegMEM) begin
-            busB = writeDataMEM;
-          end
         end
       endcase
     end

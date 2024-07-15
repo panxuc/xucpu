@@ -38,7 +38,7 @@ module RAM(
 
   // 串口通信
 
-  parameter CLK_FREQ = 50000000;
+  parameter CLK_FREQ = 60000000;
   parameter BAUD = 9600;
 
   wire rxdDataReady;

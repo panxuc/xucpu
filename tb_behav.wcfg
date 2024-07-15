@@ -17,10 +17,10 @@
       <Cursor1Time time="10322477fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="305"></NameColumnWidth>
+      <NameColumnWidth column_width="281"></NameColumnWidth>
       <ValueColumnWidth column_width="120"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="181" />
+   <WVObjectSize size="191" />
    <wvobject type="logic" fp_name="/tb/dut/u_cpu/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -744,5 +744,45 @@
    <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/Baud">
       <obj_property name="ElementShortName">Baud[31:0]</obj_property>
       <obj_property name="ObjectShortName">Baud[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/enable">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/tick">
+      <obj_property name="ElementShortName">tick</obj_property>
+      <obj_property name="ObjectShortName">tick</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/Acc">
+      <obj_property name="ElementShortName">Acc[21:0]</obj_property>
+      <obj_property name="ObjectShortName">Acc[21:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/ClkFrequency">
+      <obj_property name="ElementShortName">ClkFrequency[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ClkFrequency[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/Baud">
+      <obj_property name="ElementShortName">Baud[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Baud[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/Oversampling">
+      <obj_property name="ElementShortName">Oversampling[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Oversampling[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/AccWidth">
+      <obj_property name="ElementShortName">AccWidth[31:0]</obj_property>
+      <obj_property name="ObjectShortName">AccWidth[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/ShiftLimiter">
+      <obj_property name="ElementShortName">ShiftLimiter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ShiftLimiter[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/dut/u_ram/u_async_transmitter/tickgen/Inc">
+      <obj_property name="ElementShortName">Inc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Inc[31:0]</obj_property>
    </wvobject>
 </wave_config>
