@@ -141,7 +141,12 @@ module ID(
           writeData = pc + 4;
           readEnable1 = 1'b1;
           readReg1 = rj;
-          if (lastInstrLoad && readReg1 == writeRegEX) begin
+          if (readReg1 == 5'h0) begin
+            branchReg1 = 32'h0;
+          end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg1 = lastStoreData;
+          end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+            branchReg1 = 32'h0;
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
@@ -164,7 +169,12 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          if (lastInstrLoad && readReg1 == writeRegEX) begin
+          if (readReg1 == 5'h0) begin
+            branchReg1 = 32'h0;
+          end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg1 = lastStoreData;
+          end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+            branchReg1 = 32'h0;
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
@@ -173,7 +183,12 @@ module ID(
           end else begin
             branchReg1 = readData1;
           end
-          if (lastInstrLoad && readReg2 == writeRegEX) begin
+          if (readReg2 == 5'h0) begin
+            branchReg2 = 32'h0;
+          end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg2 = lastStoreData;
+          end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+            branchReg2 = 32'h0;
             stallReqReg2 = 1'b1;
           end else if (writeEnableEX && readReg2 == writeRegEX) begin
             branchReg2 = writeDataEX;
@@ -192,7 +207,12 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          if (lastInstrLoad && readReg1 == writeRegEX) begin
+          if (readReg1 == 5'h0) begin
+            branchReg1 = 32'h0;
+          end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg1 = lastStoreData;
+          end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+            branchReg1 = 32'h0;
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
@@ -201,7 +221,12 @@ module ID(
           end else begin
             branchReg1 = readData1;
           end
-          if (lastInstrLoad && readReg2 == writeRegEX) begin
+          if (readReg2 == 5'h0) begin
+            branchReg2 = 32'h0;
+          end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg2 = lastStoreData;
+          end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+            branchReg2 = 32'h0;
             stallReqReg2 = 1'b1;
           end else if (writeEnableEX && readReg2 == writeRegEX) begin
             branchReg2 = writeDataEX;
@@ -227,7 +252,12 @@ module ID(
           readReg1 = rj;
           readEnable2 = 1'b1;
           readReg2 = rd;
-          if (lastInstrLoad && readReg1 == writeRegEX) begin
+          if (readReg1 == 5'h0) begin
+            branchReg1 = 32'h0;
+          end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg1 = lastStoreData;
+          end else if (lastInstrLoad && readReg1 == writeRegEX) begin
+            branchReg1 = 32'h0;
             stallReqReg1 = 1'b1;
           end else if (writeEnableEX && readReg1 == writeRegEX) begin
             branchReg1 = writeDataEX;
@@ -236,7 +266,12 @@ module ID(
           end else begin
             branchReg1 = readData1;
           end
-          if (lastInstrLoad && readReg2 == writeRegEX) begin
+          if (readReg2 == 5'h0) begin
+            branchReg2 = 32'h0;
+          end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+            branchReg2 = lastStoreData;
+          end else if (lastInstrLoad && readReg2 == writeRegEX) begin
+            branchReg2 = 32'h0;
             stallReqReg2 = 1'b1;
           end else if (writeEnableEX && readReg2 == writeRegEX) begin
             branchReg2 = writeDataEX;
@@ -272,7 +307,9 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -293,7 +330,9 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -314,7 +353,9 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -336,7 +377,9 @@ module ID(
                   readEnable2 = 1'b1;
                   readReg2 = rd;
                   memOp = `MEM_SW;
-                  if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg2 == 5'h0) begin
+                    memWriteData = 32'h0;
+                  end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     memWriteData = lastStoreData;
                   end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                     memWriteData = 32'h0;
@@ -348,7 +391,9 @@ module ID(
                   end else begin
                     memWriteData = readData2;
                   end
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -370,7 +415,9 @@ module ID(
                   readEnable1 = 1'b1;
                   readReg1 = rj;
                   memOp = `MEM_LW;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -392,7 +439,9 @@ module ID(
                   readEnable2 = 1'b1;
                   readReg2 = rd;
                   memOp = `MEM_SB;
-                  if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg2 == 5'h0) begin
+                    memWriteData = 32'h0;
+                  end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     memWriteData = {24'h0, lastStoreData[7:0]};
                   end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                     memWriteData = 32'h0;
@@ -404,7 +453,9 @@ module ID(
                   end else begin
                     memWriteData = {24'h0, readData2[7:0]};
                   end
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -426,7 +477,9 @@ module ID(
                   readEnable1 = 1'b1;
                   readReg1 = rj;
                   memOp = `MEM_LB;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -447,7 +500,9 @@ module ID(
                   writeReg = rd;
                   readEnable1 = 1'b1;
                   readReg1 = rj;
-                  if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                  if (readReg1 == 5'h0) begin
+                    busA = 32'h0;
+                  end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                     busA = lastStoreData;
                   end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                     busA = 32'h0;
@@ -472,7 +527,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -484,7 +541,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -506,7 +565,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -518,7 +579,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -540,7 +603,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -552,7 +617,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -574,7 +641,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -586,7 +655,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -608,7 +679,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -620,7 +693,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -640,7 +715,9 @@ module ID(
                       writeReg = rd;
                       readEnable1 = 1'b1;
                       readReg1 = rj;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -661,7 +738,9 @@ module ID(
                       writeReg = rd;
                       readEnable1 = 1'b1;
                       readReg1 = rj;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -684,7 +763,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -696,7 +777,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;
@@ -718,7 +801,9 @@ module ID(
                       readReg1 = rj;
                       readEnable2 = 1'b1;
                       readReg2 = rk;
-                      if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg1 == 5'h0) begin
+                        busA = 32'h0;
+                      end else if (lastInstrLoad && readReg1 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busA = lastStoreData;
                       end else if (lastInstrLoad && readReg1 == writeRegEX) begin
                         busA = 32'h0;
@@ -730,7 +815,9 @@ module ID(
                       end else begin
                         busA = readData1;
                       end
-                      if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
+                      if (readReg2 == 5'h0) begin
+                        busB = 32'h0;
+                      end else if (lastInstrLoad && readReg2 == writeRegEX && memAddressEX == lastStoreAddress) begin
                         busB = lastStoreData;
                       end else if (lastInstrLoad && readReg2 == writeRegEX) begin
                         busB = 32'h0;

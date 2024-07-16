@@ -44,8 +44,6 @@ parameter BASE_RAM_INIT_FILE = "/home/xuc/nscscc-test/main.bin"; //BaseRAM初始
 parameter EXT_RAM_INIT_FILE = "/home/xuc/nscscc-test/eram.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
 parameter FLASH_INIT_FILE = "/home/xuc/nscscc-test/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路径
 
-assign rxd = 1'b1; //idle state
-
 initial begin 
     //在这里可以自定义测试输入序列，例如：
     dip_sw = 32'h2;
@@ -201,4 +199,140 @@ initial begin
         ext2.mem_array1[i] = tmp_array[i][0+:8];
     end
 end
+
+// Following codes are added by Xuc Pan
+
+// 模拟串口
+
+wire rxdDataReady;
+wire rxdClear;
+wire [7:0] rxdData;
+
+wire txdStart;
+wire [7:0] txdData;
+wire txdBusy;
+
+wire [7:0] rxdFifoDin;
+wire rxdFifoWrEn;
+reg rxdFifoRdEn;
+wire [7:0] rxdFifoDout;
+wire rxdFifoFull;
+wire rxdFifoEmpty;
+
+reg [7:0] txdFifoDin;
+reg txdFifoWrEn;
+wire txdFifoRdEn;
+wire [7:0] txdFifoDout;
+wire txdFifoFull;
+wire txdFifoEmpty;
+
+async_receiver #(.ClkFrequency(50000000), .Baud(9600)) u_async_receiver(
+    .clk(clk_50M),
+    .RxD(txd),
+    .RxD_data_ready(rxdDataReady),
+    .RxD_clear(rxdClear),
+    .RxD_data(rxdData)
+);
+
+async_transmitter #(.ClkFrequency(50000000), .Baud(9600)) u_async_transmitter(
+    .clk(clk_50M),
+    .TxD_start(txdStart),
+    .TxD_data(txdData),
+    .TxD(rxd),
+    .TxD_busy(txdBusy)
+);
+
+fifo_generator_0 u_rxd_fifo(
+    .clk(clk_50M),
+    .rst(reset_btn),
+    .din(rxdFifoDin),
+    .wr_en(rxdFifoWrEn),
+    .rd_en(rxdFifoRdEn),
+    .dout(rxdFifoDout),
+    .full(rxdFifoFull),
+    .empty(rxdFifoEmpty)
+);
+
+fifo_generator_0 u_txd_fifo(
+    .clk(clk_50M),
+    .rst(reset_btn),
+    .din(txdFifoDin),
+    .wr_en(txdFifoWrEn),
+    .rd_en(txdFifoRdEn),
+    .dout(txdFifoDout),
+    .full(txdFifoFull),
+    .empty(txdFifoEmpty)
+);
+
+assign rxdFifoWrEn = rxdDataReady;
+assign rxdClear = rxdDataReady && !rxdFifoFull;
+assign rxdFifoDin = rxdData;
+assign txdFifoRdEn = txdStart;
+assign txdStart = !txdBusy && !txdFifoEmpty;
+assign txdData = txdFifoDout;
+
+task write_serial;
+    input [7:0] data;
+    begin
+        #20;
+        txdFifoDin = data;
+        txdFifoWrEn = 1'b1;
+        #20;
+        txdFifoWrEn = 1'b0;
+    end
+endtask
+
+task write_serial_word;
+    input [31:0] data;
+    begin
+        write_serial(data[31:24]);
+        write_serial(data[23:16]);
+        write_serial(data[15:8]);
+        write_serial(data[7:0]);
+    end
+endtask
+
+initial begin
+    rxdFifoRdEn = 1'b0;
+    txdFifoDin = 8'h00;
+    txdFifoWrEn = 1'b0;
+    #40000000;
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100000); // __start:
+    write_serial_word(32'h0C048002); // addi.w      $t0,$zero,0x1   # t0 = 1
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100004);
+    write_serial_word(32'h0D048002); // addi.w      $t1,$zero,0x1   # t1 = 1
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100008);
+    write_serial_word(32'h04800015); // lu12i.w     $a0,-0x7fc00    # a0 = 0x80400000
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h8010000C);
+    write_serial_word(32'h85808002); // addi.w      $a1,$a0,0x20    # a1 = 0x80400020
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100010); // loop:
+    write_serial_word(32'h8E351000); // add.w       $t2,$t0,$t1     # t2 = t0+t1
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100014);
+    write_serial_word(32'hAC018002); // addi.w      $t0,$t1,0x0     # t0 = t1
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100018);
+    write_serial_word(32'hCD018002); // addi.w      $t1,$t2,0x0     # t1 = t2
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h8010001C);
+    write_serial_word(32'h8E008029); // st.w        $t2,$a0,0x0
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100020);
+    write_serial_word(32'h84108002); // addi.w      $a0,$a0,0x4     # a0 += 4
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100024);
+    write_serial_word(32'h85ECFF5F); // bne         $a0,$a1,loop
+    write_serial(8'h41); // 'A'
+    write_serial_word(32'h80100028);
+    write_serial_word(32'h2000004C); // jirl        $zero,$ra,0x0
+    write_serial(8'h44); // 'D'
+    write_serial_word(32'h80100000);
+    write_serial(8'h2C); // 44
+end
+
 endmodule
