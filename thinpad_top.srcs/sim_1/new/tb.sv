@@ -298,40 +298,51 @@ initial begin
     txdFifoWrEn = 1'b0;
     #40000000;
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100000); // __start:
+    write_serial_word(32'h00001080); // __start:
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h0C048002); // addi.w      $t0,$zero,0x1   # t0 = 1
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100004);
+    write_serial_word(32'h04001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h0D048002); // addi.w      $t1,$zero,0x1   # t1 = 1
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100008);
+    write_serial_word(32'h08001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h04800015); // lu12i.w     $a0,-0x7fc00    # a0 = 0x80400000
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h8010000C);
+    write_serial_word(32'h0C001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h85808002); // addi.w      $a1,$a0,0x20    # a1 = 0x80400020
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100010); // loop:
+    write_serial_word(32'h10001080); // loop:
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h8E351000); // add.w       $t2,$t0,$t1     # t2 = t0+t1
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100014);
+    write_serial_word(32'h14001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'hAC018002); // addi.w      $t0,$t1,0x0     # t0 = t1
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100018);
+    write_serial_word(32'h18001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'hCD018002); // addi.w      $t1,$t2,0x0     # t1 = t2
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h8010001C);
+    write_serial_word(32'h1C001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h8E008029); // st.w        $t2,$a0,0x0
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100020);
+    write_serial_word(32'h20001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h84108002); // addi.w      $a0,$a0,0x4     # a0 += 4
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100024);
+    write_serial_word(32'h24001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h85ECFF5F); // bne         $a0,$a1,loop
     write_serial(8'h41); // 'A'
-    write_serial_word(32'h80100028);
+    write_serial_word(32'h28001080);
+    write_serial_word(32'h04000000); // 4
     write_serial_word(32'h2000004C); // jirl        $zero,$ra,0x0
     write_serial(8'h44); // 'D'
-    write_serial_word(32'h80100000);
+    write_serial_word(32'h00001080);
     write_serial(8'h2C); // 44
 end
 

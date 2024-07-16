@@ -18,3 +18,4 @@ thinpad_top.sim/sim_1/impl/func/xsim/
 *.log
 *.dcp
 /.lint/
+*.wcfg
