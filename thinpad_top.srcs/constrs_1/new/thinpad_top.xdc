@@ -288,7 +288,7 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
 set cpu_clk [get_clocks -of_objects  [get_pins clk_gen/clk_out3]]
-set uart_delay 10
+set uart_delay 11
 set ram_input_delay 16
 set ram_output_delay 12
 

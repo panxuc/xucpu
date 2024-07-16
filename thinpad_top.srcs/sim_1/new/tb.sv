@@ -343,7 +343,7 @@ initial begin
     write_serial_word(32'h2000004C); // jirl        $zero,$ra,0x0
     write_serial(8'h44); // 'D'
     write_serial_word(32'h00001080);
-    write_serial(8'h2C); // 44
+    write_serial(8'h2C000000); // 44
 end
 
 endmodule
