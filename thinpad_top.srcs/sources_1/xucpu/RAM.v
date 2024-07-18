@@ -38,7 +38,7 @@ module RAM(
 
   // 串口通信
 
-  parameter CLK_FREQ = 60000000;
+  parameter CLK_FREQ = 50000000;
   parameter BAUD = 9600;
 
   wire rxdDataReady;
@@ -119,27 +119,27 @@ module RAM(
 
   always @(*) begin
     if (serialState) begin
-      txdFifoWrEn = 1'b0;
-      rxdFifoRdEn = 1'b0;
-      txdFifoDin = 8'h0;
-      serialOut = {30'h0, !rxdFifoEmpty, !txdFifoFull};
+      txdFifoWrEn <= 1'b0;
+      rxdFifoRdEn <= 1'b0;
+      txdFifoDin <= 8'h0;
+      serialOut <= {30'h0, !rxdFifoEmpty, !txdFifoFull};
     end else if (serialData) begin
       if (!dataMemWriteEnable) begin
-        txdFifoWrEn = 1'b0;
-        rxdFifoRdEn = 1'b1;
-        txdFifoDin = 8'h0;
-        serialOut = {24'h0, rxdFifoDout};
+        txdFifoWrEn <= 1'b0;
+        rxdFifoRdEn <= 1'b1;
+        txdFifoDin <= 8'h0;
+        serialOut <= {24'h0, rxdFifoDout};
       end else begin
-        txdFifoWrEn = 1'b1;
-        rxdFifoRdEn = 1'b0;
-        txdFifoDin = dataMemWriteData[7:0];
-        serialOut = 32'h0;
+        txdFifoWrEn <= 1'b1;
+        rxdFifoRdEn <= 1'b0;
+        txdFifoDin <= dataMemWriteData[7:0];
+        serialOut <= 32'h0;
       end
     end else begin
-      txdFifoWrEn = 1'b0;
-      rxdFifoRdEn = 1'b0;
-      txdFifoDin = 8'h0;
-      serialOut = 32'h0;
+      txdFifoWrEn <= 1'b0;
+      rxdFifoRdEn <= 1'b0;
+      txdFifoDin <= 8'h0;
+      serialOut <= 32'h0;
     end
   end
 
@@ -150,19 +150,19 @@ module RAM(
 
   always @(*) begin
     if (baseRAM) begin
-      base_ram_addr = dataMemAddress[21:2];
-      base_ram_be_n = ~dataMemByteEnable;
-      base_ram_ce_n = 1'b0;
-      base_ram_oe_n = ~dataMemReadEnable;
-      base_ram_we_n = ~dataMemWriteEnable;
-      instrMemData = 32'h00000000;
+      base_ram_addr <= dataMemAddress[21:2];
+      base_ram_be_n <= ~dataMemByteEnable;
+      base_ram_ce_n <= 1'b0;
+      base_ram_oe_n <= ~dataMemReadEnable;
+      base_ram_we_n <= ~dataMemWriteEnable;
+      instrMemData <= 32'h00000000;
     end else begin
-      base_ram_addr = instrMemAddress[21:2];
-      base_ram_be_n = 4'b0000;
-      base_ram_ce_n = 1'b0;
-      base_ram_oe_n = 1'b0;
-      base_ram_we_n = 1'b1;
-      instrMemData = baseRAMOut;
+      base_ram_addr <= instrMemAddress[21:2];
+      base_ram_be_n <= 4'b0000;
+      base_ram_ce_n <= 1'b0;
+      base_ram_oe_n <= 1'b0;
+      base_ram_we_n <= 1'b1;
+      instrMemData <= baseRAMOut;
     end
   end
 
@@ -173,17 +173,17 @@ module RAM(
 
   always @(*) begin
     if (extRAM) begin
-      ext_ram_addr = dataMemAddress[21:2];
-      ext_ram_be_n = ~dataMemByteEnable;
-      ext_ram_ce_n = 1'b0;
-      ext_ram_oe_n = ~dataMemReadEnable;
-      ext_ram_we_n = ~dataMemWriteEnable;
+      ext_ram_addr <= dataMemAddress[21:2];
+      ext_ram_be_n <= ~dataMemByteEnable;
+      ext_ram_ce_n <= 1'b0;
+      ext_ram_oe_n <= ~dataMemReadEnable;
+      ext_ram_we_n <= ~dataMemWriteEnable;
     end else begin
-      ext_ram_addr = 20'h0;
-      ext_ram_be_n = 4'b0000;
-      ext_ram_ce_n = 1'b0;
-      ext_ram_oe_n = 1'b1;
-      ext_ram_we_n = 1'b1;
+      ext_ram_addr <= 20'h0;
+      ext_ram_be_n <= 4'b0000;
+      ext_ram_ce_n <= 1'b0;
+      ext_ram_oe_n <= 1'b1;
+      ext_ram_we_n <= 1'b1;
     end
   end
 
@@ -194,22 +194,22 @@ module RAM(
       dataMemReadData = serialOut;
     end else if (baseRAM) begin
       case (dataMemByteEnable)
-        4'b0001: dataMemReadData = {{24{baseRAMOut[7]}}, baseRAMOut[7:0]};
-        4'b0010: dataMemReadData = {{24{baseRAMOut[15]}}, baseRAMOut[15:8]};
-        4'b0100: dataMemReadData = {{24{baseRAMOut[23]}}, baseRAMOut[23:16]};
-        4'b1000: dataMemReadData = {{24{baseRAMOut[31]}}, baseRAMOut[31:24]};
-        default: dataMemReadData = baseRAMOut;
+        4'b0001: dataMemReadData <= {{24{baseRAMOut[7]}}, baseRAMOut[7:0]};
+        4'b0010: dataMemReadData <= {{24{baseRAMOut[15]}}, baseRAMOut[15:8]};
+        4'b0100: dataMemReadData <= {{24{baseRAMOut[23]}}, baseRAMOut[23:16]};
+        4'b1000: dataMemReadData <= {{24{baseRAMOut[31]}}, baseRAMOut[31:24]};
+        default: dataMemReadData <= baseRAMOut;
       endcase
     end else if (extRAM) begin
       case (dataMemByteEnable)
-        4'b0001: dataMemReadData = {{24{extRAMOut[7]}}, extRAMOut[7:0]};
-        4'b0010: dataMemReadData = {{24{extRAMOut[15]}}, extRAMOut[15:8]};
-        4'b0100: dataMemReadData = {{24{extRAMOut[23]}}, extRAMOut[23:16]};
-        4'b1000: dataMemReadData = {{24{extRAMOut[31]}}, extRAMOut[31:24]};
-        default: dataMemReadData = extRAMOut;
+        4'b0001: dataMemReadData <= {{24{extRAMOut[7]}}, extRAMOut[7:0]};
+        4'b0010: dataMemReadData <= {{24{extRAMOut[15]}}, extRAMOut[15:8]};
+        4'b0100: dataMemReadData <= {{24{extRAMOut[23]}}, extRAMOut[23:16]};
+        4'b1000: dataMemReadData <= {{24{extRAMOut[31]}}, extRAMOut[31:24]};
+        default: dataMemReadData <= extRAMOut;
       endcase
     end else begin
-      dataMemReadData = 32'h00000000;
+      dataMemReadData <= 32'h00000000;
     end
   end
 

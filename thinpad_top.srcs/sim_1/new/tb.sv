@@ -296,7 +296,7 @@ initial begin
     rxdFifoRdEn = 1'b0;
     txdFifoDin = 8'h00;
     txdFifoWrEn = 1'b0;
-    #40000000;
+    #50000000;
     write_serial(8'h41); // 'A'
     write_serial_word(32'h00001080); // __start:
     write_serial_word(32'h04000000); // 4
