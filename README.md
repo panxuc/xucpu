@@ -4,6 +4,12 @@
 
 二级等级评测中的3条随机指令为：`SLTI, SRL.W, BLTU`
 
+## Milestone
+
+| Date  | Freq  | STREAM | MATRIX | CRYPTONIGHT |
+| :---: | :---: | :----: | :----: | :---------: |
+| 7.18  | 50MHz | 0.126s | 0.197s |   0.493s    |
+
 ## LoongArch 指令集
 
 ### 寄存器
