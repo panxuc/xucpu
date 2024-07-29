@@ -55,36 +55,19 @@ module thinpad_top(
 
     assign leds = dip_sw[15:0];
 
-    wire locked, clk_100M, clk_80M, clk_60M;
-    reg reset_of_clk100M, reset_of_clk80M, reset_of_clk60M, reset_of_clk50M;
+    wire locked, clk_out;
+    reg reset_of_clk_out;
 
     pll_example clk_gen(
         .clk_in1(clk_50M),
-        .clk_out1(clk_100M),
-        .clk_out2(clk_80M),
-        .clk_out3(clk_60M),
+        .clk_out1(clk_out),
         .reset(reset_btn),
         .locked(locked)
     );
 
-    always @(posedge clk_100M or negedge locked) begin
-        if (~locked) reset_of_clk100M <= 1'b1;
-        else reset_of_clk100M <= 1'b0;
-    end
-
-    always @(posedge clk_80M or negedge locked) begin
-        if (~locked) reset_of_clk80M <= 1'b1;
-        else reset_of_clk80M <= 1'b0;
-    end
-
-    always @(posedge clk_60M or negedge locked) begin
-        if (~locked) reset_of_clk60M <= 1'b1;
-        else reset_of_clk60M <= 1'b0;
-    end
-    
-    always @(posedge clk_50M or negedge locked) begin
-        if (~locked) reset_of_clk50M <= 1'b1;
-        else reset_of_clk50M <= 1'b0;
+    always @(posedge clk_out or negedge locked) begin
+        if (~locked) reset_of_clk_out <= 1'b1;
+        else reset_of_clk_out <= 1'b0;
     end
 
     wire [31:0] instrMemAddress;
@@ -98,8 +81,8 @@ module thinpad_top(
     wire dataMemChipSelect;
 
     CPU u_cpu(
-        .clk(clk_50M),
-        .rst(reset_of_clk50M),
+        .clk(clk_out),
+        .rst(reset_of_clk_out),
         .instrMemAddress(instrMemAddress),
         .instrMemData(instrMemData),
         .dataMemReadEnable(dataMemReadEnable),
@@ -112,8 +95,8 @@ module thinpad_top(
     );
 
     RAM u_ram(
-        .clk(clk_50M),
-        .rst(reset_of_clk50M),
+        .clk(clk_out),
+        .rst(reset_of_clk_out),
         .txd(txd),
         .rxd(rxd),
         .instrMemAddress(instrMemAddress),

@@ -9,6 +9,7 @@
 | Date  | Freq  | STREAM | MATRIX | CRYPTONIGHT |
 | :---: | :---: | :----: | :----: | :---------: |
 | 7.18  | 50MHz | 0.126s | 0.197s |   0.493s    |
+| 7.30  | 55MHz | 0.114s | 0.179s |   0.448s    |
 
 ## LoongArch 指令集
 
