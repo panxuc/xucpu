@@ -291,8 +291,8 @@ set cpu_clk [get_clocks -of_objects  [get_pins clk_gen/clk_out1]]
 # set cpu_clk clk_50M
 
 set uart_delay 10
-set ram_input_delay 12
-set ram_output_delay 12
+set ram_input_delay 12.3
+set ram_output_delay 12.2
 
 set_input_delay -clock $cpu_clk $ram_input_delay [get_ports base_ram_data[*]] 
 set_input_delay -clock $cpu_clk $ram_input_delay [get_ports ext_ram_data[*]] 
