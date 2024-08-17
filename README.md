@@ -1,17 +1,41 @@
 # XuCPU
 
-本实验需要实现一个 32 位 LoongArch CPU，支持 LoongArch-C3 指令集的 22 条指令：`ADDI.W, ADD.W, SUB.W, LU12I.W, PCADDU12I, OR, ORI, ANDI, AND, XOR, SRLI.W, SLLI.W, JIRL, B, BEQ, BNE, BL, ST.W, LD.W, ST.B, LD.B, MUL.W`。
+实现一个 32 位 LoongArch CPU，支持 LoongArch-C3 指令集的 25 条指令：`ADDI.W, ADD.W, SUB.W, LU12I.W, PCADDU12I, OR, ORI, ANDI, AND, XOR, SRLI.W, SLLI.W, JIRL, B, BEQ, BNE, BL, ST.W, LD.W, ST.B, LD.B, MUL.W, SLTI, SRL.W, BLTU`。
 
-二级等级评测中的3条随机指令为：`SLTI, SRL.W, BLTU`
+该 CPU 为经典五级流水线 CPU，包括取指、译码、执行、访存和写回五个阶段；单发射，无 Cache，无分支预测，无乱序执行。
+
+碍于笔者暑期时间有限且事务繁忙，投入龙芯杯个人赛开发的时间较少，该 CPU 表现一般，架构上也存在诸多可以改进的地方。希望后来者能借此有所启发。
+
+## 项目结构
+
+```
+.
+├── .ci-scripts/                        # CI 脚本（由发布包提供）
+├── asm/                                # 决赛使用的汇编代码
+├── judge/                              # 比赛使用的评测代码
+├── thinpad_top.srcs/                   # Vivado 项目文件
+│   ├── constrs_1/new/thinpad_top.xdc   # 约束文件
+│   ├── sim_1/                          # 仿真所需文件（由发布包提供）
+│   └── sources_1/                      # 源码文件
+│       ├── ip/                         # IP 核（由 Vivado 自动生成）
+│       ├── new/                        # Verilog 源码（由发布包提供）
+│       └── xucpu/                      # XuCPU 源码
+├── .gitignore                          # Git 忽略文件（由发布包提供）
+├── .gitlab-ci.yml                      # GitLab CI 配置文件（由发布包提供）
+├── .gitmodules                         # Git 子模块配置文件（由发布包提供）
+├── LICENSE                             # 开源许可证（GPLv3）
+├── README.md                           # 本文件
+└── thinpad_top.xpr                     # Vivado 项目文件（由发布包提供）
+```
 
 ## Milestone
 
-| Date  | Freq  | STREAM | MATRIX | CRYPTONIGHT |
-| :---: | :---: | :----: | :----: | :---------: |
-| 7.18  | 50MHz | 0.126s | 0.197s |   0.493s    |
-| 7.30  | 55MHz | 0.114s | 0.179s |   0.448s    |
-| 8.11  | 56MHz | 0.112s | 0.176s |   0.440s    |
-| 8.12  | 57MHz | 0.110s | 0.173s |   0.432s    |
+| Freq  | STREAM | MATRIX | CRYPTONIGHT | Final  |
+| :---: | :----: | :----: | :---------: | :----: |
+| 50MHz | 0.126s | 0.197s |   0.493s    |        |
+| 55MHz | 0.114s | 0.179s |   0.448s    |        |
+| 56MHz | 0.112s | 0.176s |   0.440s    |        |
+| 57MHz | 0.110s | 0.173s |   0.432s    | 0.097s |
 
 ## LoongArch 指令集
 

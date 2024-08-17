@@ -2,16 +2,19 @@
     .section text
 _start:
 .text
-    addi.w      $t0,$zero,0x1   # t0 = 1
-    addi.w      $t1,$zero,0x1   # t1 = 1
-    lu12i.w     $a0,-0x7fc00    # a0 = 0x80400000
-    addi.w      $a1,$a0,0x20    # a1 = 0x80400020
+    lu12i.w $a0,    -0x7fc00            # a0 = 0x80400000
+    lu12i.w $a1,    0x300               # a1 = 0x300000
+    add.w   $a1,    $a0,        $a1     # a1 = a0+a1 = 0x80700000
+    addi.w  $a1,    $a1,        -0x4    # a1 = a1-4 = 0x806ffffc
 loop:
-    add.w       $t2,$t0,$t1     # t2 = t0+t1
-    addi.w      $t0,$t1,0x0     # t0 = t1
-    addi.w      $t1,$t2,0x0     # t1 = t2
-    st.w        $t2,$a0,0x0
-    addi.w      $a0,$a0,0x4     # a0 += 4
-    bne         $a0,$a1,loop
+    ld.w    $t0,    $a0,        0x0     # t0 = *a0
+    ld.w    $t1,    $a0,        0x4     # t1 = *(a0+4)
+    addi.w  $a0,    $a0,        0x4     # a0 += 4
+    bltu    $t0,    $t1,        else
+    st.w    $t0,    $a0,        0x0     # *a0 = t0
+else:
+    bne     $a0,    $a1,        loop
 
-    jirl        $zero,$ra,0x0
+    ld.w    $t2,    $a1,        0x0     # t2 = *a1
+    st.w    $t2,    $a1,        0x4     # *(a1+4) = t2
+    jirl    $zero,  $ra,        0x0
